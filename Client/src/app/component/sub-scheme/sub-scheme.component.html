@@ -1,0 +1,76 @@
+
+<div class="auth-main">
+  <!-- <div class="auth-wrapper v3"> -->
+    <div class="auth-form">
+      
+      <div class="card my-5">
+        <div class="card-body">
+          <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Add Sub-Scheme</b></h3>
+          <form [formGroup]="formValue" (ngSubmit)="onSubmit(formValue.value)">
+
+          <div class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="schemeId"><h5>Scheme</h5></label>
+              <select class="form-select" id="schemeId"  formControlName="schemeId" required>
+                <option value="" selected disabled>Select Scheme</option>
+                <option *ngFor="let scheme of SchemeDetails" value="{{scheme.id}}">{{ scheme.schemeName }}</option>
+                </select>
+            </div>
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="subScheme"><h5>Sub-Scheme Name</h5></label>
+              <input type="text" class="form-control" id="subScheme" formControlName="subScheme" placeholder="Enter Sub-Scheme Name" required maxlength="150">
+            </div>
+          </div>
+    
+          <div class="row justify-content-center">
+            <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
+            <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px" (click)="cancel()">Reset</button>
+       </div>
+      </form>
+       <div class="card-body p-5">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search..." #searchInput />
+          </div>
+        </div>
+        <!--table-->
+        <table class="table table-striped">
+          <thead style="background-color: #A89AFF">
+            <tr>
+              <th scope="col">Sr No.</th>
+              <th scope="col">Sub-Scheme</th>
+              <th scope="col">Scheme</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let subScheme of subSchemeDetails; let i = index">
+              <th scope="row">{{ i+1 }}</th> 
+              <td>{{ subScheme.subScheme }}</td>
+              <td>{{ subScheme.schemeName }}</td> 
+              <td>
+                <i class="fa fa-pencil" (click)="editing(subScheme.id)" aria-hidden="true" style="cursor: pointer;"></i>
+                <i class="fa fa-trash" (click)="deleteSubScheme(subScheme.id)" style="margin-left: 16px; cursor: pointer;"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!--table end-->
+        <!-- Pagination controls -->
+        <div>
+     
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>      
+
+  
+
+
+
+
+
+  

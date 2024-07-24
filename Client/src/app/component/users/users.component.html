@@ -1,0 +1,104 @@
+
+<div class="auth-main">
+    <!-- <div class="auth-wrapper v3"> -->
+      <div class="auth-form">
+        
+        <div class="card my-5 just">
+          <div class="card-body">
+            <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Register User</b></h3>
+            <form [formGroup]="formValue" (ngSubmit)="onSubmit(formValue.value)">
+  
+            <div class="row justify-content-center">
+              <div class="col-md-5 mb-3">
+                <label class="form-label" for="roleId"><h5>Select Role</h5></label>
+                <select class="form-select" id="roleId" formControlName="roleId">
+                  <option value="" selected disabled>Choose Role</option>
+                  <option *ngFor="let role of RoleDetails"  value="{{role.id}}">{{ role.roleName }}</option>
+                  </select>
+              </div>
+              <div class="col-md-5 mb-3">
+                <label class="form-label" for="levelId"><h5>Select Level</h5></label>
+                <select class="form-select" id="levelId" formControlName="levelId" required>
+                  <option value="" selected disabled>Choose Level (Select Role first)</option>
+                  <option *ngFor="let level of LevelDetails"  value="{{level.id}}">{{ level.levelName }}</option>
+                  </select>
+              </div>
+            </div>
+            
+            <div class="row justify-content-center">
+              <div class="col-md-5 mb-3">
+                <label class="form-label" for="agencyName"><h5>Agency Name</h5></label>
+                <input type="text" class="form-control" id="agencyName" formControlName="agencyName" placeholder="Enter Agency Name" required maxlength="150">
+              </div>
+              <div class="col-md-5 mb-3">
+                <label class="form-label" for="email"><h5>Email</h5></label>
+                <input type="text" class="form-control" id="email" formControlName="email" placeholder="Enter Email" required maxlength="150">
+              </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-5 mb-3">
+                    <label class="form-label" for="password"><h5>Password</h5></label>
+                    <input type="password" class="form-control" id="password" formControlName="password" placeholder="Enter Password" required minlength="8">
+                </div>
+              </div>
+            
+            
+  
+            <div class="row justify-content-center">
+              <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
+              <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px" (click)="cancel()" >Reset</button>
+         </div>
+        </form>
+         <div class="card-body p-5">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Search..." #searchInput />
+            </div>
+          </div>
+          <!--table-->
+          <table class="table table-striped">
+            <thead style="background-color: #A89AFF">
+              <tr>
+                <th scope="col">Sr No.</th>
+                <th scope="col">Agency Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">Level</th>
+                <th scope="col">Email</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of UserDetails; let i = index">
+                <th scope="row">{{ i+1 }}</th> 
+                <td>{{ user.agencyName }}</td>
+                <td>{{ user.roleName }}</td>
+                <td>{{ user.levelName }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <i class="fa fa-pencil" (click)="editing(user.id)" aria-hidden="true" style="cursor: pointer;"></i>
+                  <i class="fa fa-toggle-on" (click)="deleteUser(user.id)" style="margin-left: 16px; cursor: pointer;"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!--table end-->
+          <!-- Pagination controls -->
+          <div>
+       
+        </div>
+      </div>
+      <div class="auth-footer row"></div>
+    </div>
+  </div>
+  </div>
+  
+          </div>
+  <!-- </div> -->
+  
+    
+  
+  
+  
+  
+  
+    

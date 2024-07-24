@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/yashankumar/Desktop/ample-angular-16-dashboard-free/angular-16/Server/Controllers",
+      "program": "/Users/yashankumar/Desktop/ample-angular-16-dashboard-free/angular-16/Server/Controllers/build/Debug/outDebug"
+    }
+  ]
+}

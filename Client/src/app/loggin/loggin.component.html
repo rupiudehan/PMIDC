@@ -1,0 +1,174 @@
+<!-- <div class="auth-main">
+  <div class="auth-wrapper v3">
+    <div class="auth-form">
+      <div class="auth-header">
+        
+      </div>
+      <div class="card my-5">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-end mb-4" >
+            <h3 class="mb-1" ><b>Login</b></h3>
+            <a  class="link-primary">Don't have an account?</a>
+          </div>
+          <div class="form-group mb-3">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" class="form-control" id="email" placeholder="Email Address" value="info@codedthemes.com" />
+          </div>
+          <div class="form-group mb-3">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password" value="123456789" />
+          </div>
+          <div class="d-flex mt-1 justify-content-between">
+            <div class="form-check">
+              <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
+              <label class="form-check-label text-muted" for="customCheckc1">Keep me sign in</label>
+            </div>
+            <h5 class="text-secondary f-w-400">Forgot Password?</h5>
+             <link rel="stylesheet" href=""> 
+           </div>
+          <div class="row justify-content-center">
+            <button type="button" class="btn btn-primary" style="width: 15%;">Login</button>
+          </div>
+          <div class="saprator mt-3">
+            <span>Login with</span>
+          </div>
+          <div class="row">
+              <ng-container *ngFor="let item of SignInOptions; trackBy: trackByFn">
+                <div class="col-4">
+                  <div class="d-grid">
+                    <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                      <img [src]="item.image" alt="google img" />
+                      <span class="d-none d-sm-inline-block"> {{ item.name }}</span>
+                    </button>
+                  </div>
+                  
+                </div>
+              </ng-container>
+              
+            </div>
+        </div>
+        
+      </div>
+      <div class="auth-footer row">
+        <div class="col my-1">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  -->
+
+
+  <section class="vh-100">
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-6">
+          <img class="center" src="../../assets/images/logo.png"
+             alt="Sample image">
+        </div>
+        
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form>
+            <div class="d-flex justify-content-center align-items-end mb-3" >
+              <h3 class="mb-1" ><b>Login</b></h3>
+             
+            </div>
+  
+            <!-- Email input -->
+            <div data-mdb-input-init class="form-outline mb-4">
+              <label class="form-label" for="form3Example3">Email address</label>
+              <input type="email" id="form3Example3" class="form-control form-control-lg"
+                placeholder="Enter a valid email address" />
+             
+            </div>
+  
+            <!-- Password input -->
+            <div data-mdb-input-init class="form-outline mb-3">
+              <label class="form-label" for="form3Example4">Password</label>
+              <input type="password" id="form3Example4" class="form-control form-control-lg"
+                placeholder="Enter password" />
+              
+            </div>
+  
+            <div class="d-flex justify-content-between align-items-center">
+              <!-- Checkbox -->
+              <div class="form-check mb-0">
+                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                <label class="form-check-label" for="form2Example3">
+                  Remember me
+                </label>
+              </div>
+              <a href="#!" class="text-body">Forgot password?</a>
+            </div>
+  
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+              <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
+                  class="link-danger">Register</a></p> -->
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+<!-- old -->
+    <!-- <div class="auth-main">
+      <div class="auth-wrapper v3"> 
+        <div class="auth-form">
+          <div class="auth-header"></div>
+          <div class="card my-5 box-border"> 
+            <div class="card-body align">
+              <div class="d-flex justify-content-center align-items-end mb-4">
+                <link rel="logo" type="image/png" href="assets/images/logo.png">
+                <h3 class="mb-1" class="row justify-content-center"><b>Login</b></h3>
+              </div>
+              <div class="form-group col-md-8 mb-4">
+                <label class="form-label" for="email">Email Address</label>
+                <input type="email" class="d-flex justify-content-between align-items-end mb-4" class="form-control" id="email" placeholder="Email Address" value="info@codedthemes.com" />
+              </div>
+              <div class="form-group col-md-8 mb-3">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" value="123456789" />
+              </div>
+              <div class="d-flex mt-1 justify-content-between">
+                <div class="form-check">
+                  <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
+                  <label class="form-check-label text-muted" for="customCheckc1">Keep me sign in</label>
+                </div>
+                <h5 class="text-secondary f-w-300">Forgot Password?</h5>
+               
+              </div>
+              <div class="row justify-content-center">
+                <button type="button" class="btn btn-primary" style="width: 15%;" routerLink="/dashboard" onclick="redirecttodashpoard()">Login</button>
+              </div>
+              <div class="saprator mt-3">
+                <span></span>
+              </div>
+              <div class="row">
+                <ng-container *ngFor="let item of SignInOptions; trackBy: trackByFn">
+                  <div class="col-4">
+                    <div class="d-grid">
+                      <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                        <img [src]="item.image" alt="google img" />
+                        <span class="d-none d-sm-inline-block">{{ item.name }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="auth-footer row">
+            <div class="col my-1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div> -->

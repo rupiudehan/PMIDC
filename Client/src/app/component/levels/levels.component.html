@@ -1,0 +1,98 @@
+
+
+<div class="auth-main">
+  <!-- <div class="auth-wrapper v3"> -->
+    <div class="auth-form">
+      
+      <div class="card my-5">
+        <div class="card-body">
+          <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Add Levels</b></h3>
+          <form [formGroup]="formValue" (ngSubmit)="onSubmit(formValue.value)">
+
+           <div class="row" class="row justify-content-center">
+            <div class="col-md-6 mb-3">
+              <label class="form-label" for="levelName"><h5>Level Name:</h5></label>
+              <input type="text" class="form-control" id="levelName" formControlName="LevelName"  placeholder="Enter Level" required maxlength="50">
+            </div>
+           </div>
+
+           <div class="row justify-content-center">
+            <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
+            <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px" (click)="resetForm()">Reset</button>
+           </div>
+         </form>
+       <div class="card-body p-5">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search..." #searchInput />
+          </div>
+        </div>
+        <!--table-->
+        <table class="table table-striped">
+          <thead style="background-color: #A89AFF">
+            <tr>
+              <th scope="col">Sr No.</th>
+              <th scope="col">Level</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let level of LevelDetails; let i = index">
+              <th scope="row">{{ i+1 }}</th> <!-- Display serial number -->
+              <td>{{ level.levelName }}</td> <!-- Display state name -->
+              <td>
+                <i class="fa fa-pencil" (click)="editLevel(level.id)" aria-hidden="true" style="cursor: pointer;"></i>
+                <i class="fa fa-trash" (click)="deleteLevel(level.id)" aria-hidden="true"  style="margin-left: 16px; cursor: pointer;" ></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!--table end-->
+        <!-- Pagination controls -->
+        <div>
+     
+      </div>
+    </div>
+    <div class="auth-footer row"></div>
+  </div>
+</div>
+</div>
+
+        </div>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- <div class="auth-main">
+    <div class="auth-form">
+  
+      <div class="card my-5">
+        <div class="card-body">
+          <h3><b>Add Level</b></h3>  <form>
+            <div class="row">
+              <div class="col-md-5 mb-3">  <label class="form-label" for="roleName"><h4>Level Name:</h4></label>
+                <input type="text" class="form-control" id="LevelName" placeholder="Enter Level Name">
+              </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+              <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
+              <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+   -->

@@ -1,0 +1,139 @@
+
+<div class="auth-main">
+  <!-- <div class="auth-wrapper v3"> -->
+    <div class="auth-form">
+      
+      <div class="card my-5">
+        <div class="card-body">
+          <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Register Sub-Component</b></h3>
+          <form [formGroup]="formValue" (ngSubmit)="onSubmit(formValue.value)">
+
+          <div class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="schemeId"><h5>Scheme</h5></label>
+              <select class="form-select" id="schemeId" formControlName="schemeId">
+                <option value="" selected disabled>Select Scheme</option>
+                <option *ngFor="let scheme of SchemeDetails"  value="{{scheme.id}}">{{ scheme.schemeName }}</option>
+                </select>
+            </div>
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="subSchemeId"><h5>Sub-Scheme</h5></label>
+              <select class="form-select" id="subSchemeId" formControlName="subSchemeId" required>
+              <option value="" selected disabled>Select Sub-Scheme (Select Scheme first)</option>
+              <option *ngFor="let subScheme of SubSchemeDetails"  value="{{subScheme.id}}">{{ subScheme.subScheme }}</option>
+                </select>
+            </div>
+          </div>
+          
+          <div class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="subComponent"><h5>Sub-Component</h5></label>
+              <input type="text" class="form-control" id="subComponent" formControlName="subComponent" placeholder="Enter Sub-Component Name" required maxlength="150">
+            </div>
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="componentCode"><h5>Component Code</h5></label>
+              <input type="text" class="form-control" id="componentCode" formControlName="componentCode" placeholder="Enter Postal Code" required>
+            </div>
+          </div>
+          
+
+          <div class="row justify-content-center">
+            <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
+            <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px" (click)="cancel()">Reset</button>
+       </div>
+      </form>
+       <div class="card-body p-5">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search..." #searchInput />
+          </div>
+        </div>
+        <!--table-->
+        <table class="table table-striped">
+          <thead style="background-color: #A89AFF">
+            <tr>
+              <th scope="col">Sr No.</th>
+              <th scope="col">Scheme</th>
+              <th scope="col">Sub-Scheme</th>
+              <th scope="col">Sub-Component</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let subComponent of SubComponentDetails; let i = index">
+              <th scope="row">{{ i+1 }}</th> 
+              <td>{{ subComponent.schemeName }}</td>
+              <td>{{ subComponent.subScheme }}</td> 
+              <td>{{ subComponent.subComponent }}</td> 
+              
+              <td>
+                <i class="fa fa-pencil" (click)="editing(subComponent.id)" aria-hidden="true" style="cursor: pointer;"></i>
+                <i class="fa fa-trash" (click)="deleteSubComponent(subComponent.id)" style="margin-left: 16px; cursor: pointer;"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!--table end-->
+        <!-- Pagination controls -->
+        <div>
+     
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>      
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+<!-- <div class="card">
+    <div class="card-body">
+      <h2>Register Sub-Component</h2>
+      <form>
+        <div class="form-group mb-3 d-flex flex-wrap">
+          <label for="schemeSelect" class="mr-2 col-form-label">Scheme:</label>
+          <select id="schemeSelect" class="form-control mr-2" style="flex: 1;">
+            <option value="">-- Select Scheme --</option>
+            <option value="scheme1">Scheme 1</option>
+            <option value="scheme2">Scheme 2</option>
+          </select>
+  
+          <label for="subSchemeSelect" class="mr-2 col-form-label">Sub-Scheme:</label>
+          <select id="subSchemeSelect" class="form-control mr-2" style="flex: 1;">
+            <option value="">-- Select Sub-Scheme --</option>
+            <option value="subScheme1">Sub-Scheme 1</option>
+            <option value="subScheme2">Sub-Scheme 2</option>
+          </select>
+        </div>
+  
+        <div class="form-group mb-3 d-flex flex-wrap">
+          <label for="subComponentName" class="mr-2 col-form-label">Sub-Component Name:</label>
+          <input type="text" class="form-control mr-2 flex-grow-1" id="subComponentName" placeholder="Enter Sub-Component Name">
+  
+          <label for="componentCode" class="mr-2 col-form-label">Component Code:</label>
+          <input type="text" class="form-control flex-grow-1" id="componentCode" placeholder="Enter Component Code">
+        </div>
+  
+        <div class="row justify-content-center mt-3">
+          <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
+          <button type="reset" class="btn btn-secondary" style="width: 15%;margin-left: 20px">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+   -->
+

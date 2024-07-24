@@ -1,0 +1,66 @@
+
+<div class="auth-main">
+  <!-- <div class="auth-wrapper v3"> -->
+    <div class="auth-form">
+      
+      <div class="card my-5">
+        <div class="card-body">
+          <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Add Country</b></h3>
+          <!-- <form [formGroup]="countryForm" (ngSubmit)="onsubmit()"></form> -->
+          <form [formGroup]="formValue" (ngSubmit)="onSubmit(formValue.value)">
+          <div class="row" class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="countryName"><h5>Country Name</h5></label>
+              <input  type="text" class="form-control" id="countryName" formControlName= "CountryName" placeholder="Enter Country Name" required maxlength="150">
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <button type="submit" class="btn btn-primary btn-block" style="width: 15%" >Add</button>
+            <button type="button" class="btn btn-secondary btn-block"  style="width: 15%;margin-left: 20px" (click)="resetForm()">Reset</button>
+          </div>
+          </form>
+       <div class="card-body p-5">
+        <div class="row mb-4">
+        </div>
+        <!--table-->
+        <table class="table table-striped">
+          <thead style="background-color: #A89AFF">
+            <tr>
+              <th scope="col">Sr No.</th>
+              <th scope="col">Country Name</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let country of CountryDetails; let i = index">
+              <th scope="row">{{ i+1 }}</th> <!-- Display serial number -->
+              <td>{{ country.countryName }}</td> <!-- Display state name -->
+              <td>
+                <i class="fa fa-pencil" (click)="editCountry(country.id)" aria-hidden="true" style="cursor: pointer;"></i>
+                <i class="fa fa-trash" (click)="deleteCountry(country.id)" aria-hidden="true"  style="margin-left: 16px; cursor: pointer;" ></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!--table end-->
+        <!-- Pagination controls -->
+        <div>
+     
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>      
+      
+  
+<!-- </div> -->
+
+  
+
+
+
+
+
+  

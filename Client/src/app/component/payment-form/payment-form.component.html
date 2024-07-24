@@ -1,0 +1,164 @@
+
+<div class="auth-main">
+    <!-- <div class="auth-wrapper v3"> -->
+      <div class="auth-form">
+        
+        <div class="card my-3">
+          <div class="card-body">
+            <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Payment Form</b></h3>
+  
+            <div class="row justify-content-center">
+              <div class="col-md-5 mb-3">
+                <label class="form-label" for="scheme-id"><h5>Select Scheme</h5></label>
+                <select class="form-select" id="scheme-id" required>
+                  <option value="" selected disabled>Choose Scheme</option>
+                  </select>
+              </div>
+              <div class="col-md-5 mb-3">
+                <label class="form-label" for="assigned-limit"><h5>Assigned-Limit</h5></label>
+                <input type="text" class="form-control" id="assigned-limit" placeholder="Assigned Limit" required maxlength="150" disabled>
+              </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="sub-scheme"><h5>Select Sub-Scheme</h5></label>
+                  <select class="form-select" id="sub-scheme-id" required>
+                    <option value="" selected disabled>Choose Sub-Scheme</option>
+                    </select>
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="sub-component-id"><h5>Select Sub-Component</h5></label>
+                  <select class="form-select" id="sub-component-id" required disabled>
+                    <option value="" selected disabled>Choose Sub-Component</option>
+                    </select>
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="vendor-id"><h5>Select Vendor</h5></label>
+                  <select class="form-select" id="vendor-id" required>
+                    <option value="" selected disabled>Choose Vendor</option>
+                    </select>
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="vendor-code"><h5>Vendor Unique Code</h5></label>
+                  <input type="text" class="form-control" id="vendor-code-id" placeholder="Enter Vendor Unique Code" required maxlength="150">
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="letter-id"><h5>Select & Uplaod Sanction Letter</h5></label>
+                  <select class="form-select" id="letter-id" required>
+                    <option value="" selected disabled>Upload Sanction Letter</option>
+                    </select>
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="letter-no."><h5>Sanction Letter Number</h5></label>
+                  <input type="text" class="form-control" id="letter-no." placeholder="Sanction Letter Number" required maxlength="150">
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="sanction-date"><h5>Sanction Date</h5></label>
+                  <input type="date" class="form-control" id="sanction-date" placeholder="dd/mm/yyyy" required maxlength="150">
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="amount"><h5>Amount To Be Paid</h5></label>
+                  <input type="number" class="form-control" id="amount" placeholder="Amount" required maxlength="150">
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="expense-type"><h5>Expense Type</h5></label>
+                  <select class="form-select" id="expense-type" required>
+                    <option value="" selected disabled>Choose Expense Type</option>
+                    <option>Revenue</option>
+                    <option>capital</option>
+                    </select>
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="deductions"><h5>Deductions</h5></label>
+                  <select class="form-select" id="deductions" required disabled>
+                    <option value="" selected disabled>Choose Deductions</option>
+                    </select>
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="deduction%"><h5>Deductions %</h5></label>
+                  <input type="text" class="form-control" id="deduction%" placeholder="Deductions %" required maxlength="150">
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="net-amount"><h5>Net Payable Amount</h5></label>
+                  <input type="number" class="form-control" id="net-amount" placeholder="Enter Amount" required maxlength="150">
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="Remarks"><h5>Remarks, if any</h5></label>
+                  <input type="text" class="form-control" id="remarks" placeholder="Remarks" required maxlength="150">
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label class="form-label" for="email"><h5>Email</h5></label>
+                  <input type="number" class="form-control" id="email" placeholder="Enter Email" required maxlength="150">
+                </div>
+              </div>
+
+  
+            <div class="row justify-content-center">
+              <button type="submit" class="btn btn-primary" style="width: 15%">Send For Approval</button>
+              <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px">Reset</button>
+         </div>
+         <!-- <div class="card-body p-5">
+          <div class="row mb-4">
+          </div>
+          table
+          <table class="table table-striped">
+            <thead style="background-color: #A89AFF">
+              <tr>
+                <th scope="col">Sr No.</th>
+                <th scope="col">State Name</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr >
+                <th scope="row"></th>
+                <td></td>
+  
+                <td>
+                  <i class="fa fa-pencil" aria-hidden="true" style="cursor: pointer;"></i>
+                  <i class="fa fa-trash" aria-hidden="true"  style="margin-left: 16px; cursor: pointer;"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+          Pagination controls
+          <div>
+       
+        </div>
+      </div>
+      <div class="auth-footer row"></div>
+    </div>
+  </div>
+  </div>
+  
+          </div> -->
+  
+  <!-- </div> -->
+  
+    
+  
+  
+  
+  
+  
+    

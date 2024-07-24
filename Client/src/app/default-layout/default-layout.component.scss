@@ -1,0 +1,26 @@
+.box-border {
+    border: 2px solid #000; /* Black border */
+    padding: 20px;          /* Space between the border and the content */
+    border-radius: 10px;    /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for better visibility */
+    width: 45%;             /* Shrink the width to 50% */
+    margin: 0 auto;         /* Center the box horizontally */
+  }
+
+  .center-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .wide-input {
+    width: 100%;            /* Make input fields take full width of their container */
+    max-width: 400px;       /* Set a max width for better appearance */
+  }
+
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }

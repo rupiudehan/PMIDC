@@ -1,0 +1,57 @@
+<div class="auth-main">
+  <div class="auth-form">
+    <div class="card my-5">
+      <div class="card-body">
+        <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Add State</b></h3>
+        <form [formGroup]="formValue" (ngSubmit)="onSubmit(formValue.value)">
+          <div class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="countryId"><h5>Select Country</h5></label>
+              <select class="form-select" id="countryId" formControlName="countryId" required>
+                <option value="" [selected]="true" >Choose Country</option>
+                <option *ngFor="let country of CountryDetails"  value="{{country.id}}">{{ country.countryName }}</option>
+              </select>
+            </div>
+            <div class="col-md-5 mb-3">
+              <label class="form-label" for="stateName" id="stateName"><h5>State Name</h5></label>
+              <input type="text" class="form-control" formControlName="stateName" id="stateName" placeholder="Enter State Name" required maxlength="150">
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <button type="submit" class="btn btn-primary"  style="width: 15%">Add</button>
+            <button type="button" class="btn btn-secondary" (click)="cancel()" style="width: 15%;margin-left: 20px">Reset</button>
+          </div>
+        </form>
+        <div class="card-body p-5">
+          <div class="row mb-4"></div>
+          <!--table-->
+          <table class="table table-striped">
+            <thead style="background-color: #A89AFF">
+              <tr>
+                <th scope="col">Sr No.</th>
+                <th scope="col">State</th>
+                <th scope="col">Country</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let state of StateDetails; let i = index">
+                <th scope="row">{{ i+1 }}</th> 
+                <td>{{ state.stateName }}</td>
+                <td>{{ state.countryName }}</td> 
+                <td>
+                  <i class="fa fa-pencil" (click)="editing(state.id)" aria-hidden="true" style="cursor: pointer;"></i>
+                  <i class="fa fa-trash" (click)="deleteState(state.id)" style="margin-left: 16px; cursor: pointer;"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <!-- Pagination controls -->
+          <div></div>
+        </div>
+      </div>
+      <div class="auth-footer row"></div>
+    </div>
+  </div>
+</div>

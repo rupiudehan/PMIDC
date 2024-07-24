@@ -1,0 +1,61 @@
+<div class="container">
+    <!-- <app-sidebar></app-sidebar> -->
+    <main>
+      <router-outlet></router-outlet>
+      <div class="auth-main">
+        <div class="auth-wrapper v3"> 
+          <div class="auth-form">
+            <div class="auth-header"></div>
+            <div class="card my-5 box-border"> <!-- Applied the box-border class here -->
+              <div class="card-body align">
+                <div class="col-md-12 col-lg-12 col-xl-9">
+                  <img class="center" src="../../assets/images/logo.png"
+                     alt="Sample image">
+                </div>
+                <div class="d-flex justify-content-center  mb-4">
+                  <!-- <h2 class="mb-1" class="row justify-content-between"><b>Login</b></h2> -->
+                </div>
+                <div class="form-group col-md-10 mb-4">
+                  <label class="form-label" for="email">Email Address</label>
+                  <input type="email" class="d-flex justify-content-between align-items-end mb-4" class="form-control" id="email" placeholder="Email Address" value="info@codedthemes.com" />
+                </div>
+                <div class="form-group col-md-10 mb-3">
+                  <label class="form-label" for="password">Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Password" value="123456789" />
+                </div>
+                <div class="d-flex mt-1 justify-content-between">
+                  <div class="form-check">
+                    <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
+                    <label class="form-check-label text-muted" for="customCheckc1">Forgot Password?</label>
+                  </div>
+                  
+                  <!-- <link rel="stylesheet" href=""> -->
+                </div>
+                <div class="row justify-content-center">
+                  <button type="button" class="btn btn-primary" style="width: 15%;" routerLink="/dashboard" onclick="redirecttodashpoard()">Login</button>
+                </div>
+                <div class="saprator mt-3">
+                  <span></span>
+                </div>
+                <div class="row">
+                  <ng-container *ngFor="let item of SignInOptions; trackBy: trackByFn">
+                    <div class="col-4">
+                      <div class="d-grid">
+                        <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                          <img [src]="item.image" alt="google img" />
+                          <span class="d-none d-sm-inline-block">{{ item.name }}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+            <div class="auth-footer row">
+              <div class="col my-1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+</div>
