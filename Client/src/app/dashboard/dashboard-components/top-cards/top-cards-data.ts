@@ -17,13 +17,13 @@ export const topcards: topcard[] = [
         bgcolor: 'danger',
         icon: 'bi bi-coin',
         title: '$1k',
-        subtitle: 'Funds'
+        subtitle: 'Funds Added'
     },
     {
         bgcolor: 'warning',
         icon: 'bi bi-basket3',
         title: '456',
-        subtitle: 'Yearly Project'
+        subtitle: 'Funds Available'
     },
     {
         bgcolor: 'info',

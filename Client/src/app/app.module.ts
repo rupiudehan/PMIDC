@@ -4,6 +4,7 @@ import {
   CommonModule, LocationStrategy,
   PathLocationStrategy
 } from '@angular/common';
+import { ToastrModule } from 'ngx-toastr';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -49,6 +50,7 @@ import { LoginLayoutComponent } from './login-layout/login-layout.component';
     FullComponent,
     SidebarComponent,
     NavigationComponent,
+    ToastrModule.forRoot({positionClass: 'toast-top-right'})
   ],
   providers: [
     {

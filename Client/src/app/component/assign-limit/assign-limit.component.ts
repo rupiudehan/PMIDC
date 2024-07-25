@@ -5,6 +5,7 @@ import { LevelService } from '../levels/level.service';
 import { UsersService } from '../users/users.service';
 import { SchemeService } from '../scheme/scheme.service';
 import { AssignLimitService } from './assign-limit.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-assign-limit',
@@ -29,7 +30,8 @@ export class AssignLimitComponent implements OnInit {
     private levelService: LevelService,
     private userService: UsersService,
     private schemeService: SchemeService,
-    private assignLimitService: AssignLimitService
+    private assignLimitService: AssignLimitService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -113,13 +115,13 @@ export class AssignLimitComponent implements OnInit {
       this.assignLimitService.postLimits(this.limitModelObj)
         .subscribe(res => {
           console.log(res);
-          alert("Limit Added Successfully");
+          this.toastr.success("Limit Added Successfully");
           this.getLimitDetails();
           this.resetForm();
         },
         err => {
-          alert(err.message);
-          //alert("Something went wrong");
+          // alert(err.message);
+          this.toastr.error("Something went wrong");
         });
     } else {
       this.updateLimit();
@@ -136,7 +138,7 @@ export class AssignLimitComponent implements OnInit {
 
 
     if (duplicate) {
-      alert("Sub-Component already exists in the selected Scheme");
+      this.toastr.error("Sub-Component already exists in the selected Scheme");   //check
       return;
     }
 
@@ -150,15 +152,15 @@ export class AssignLimitComponent implements OnInit {
       this.assignLimitService.updateLimit(this.limitModelObj)
         .subscribe((res:any) => {
           console.log(res);
-          alert("Limit Updated Successfully");
+          this.toastr.success("Limit Updated Successfully");
           this.getLimitDetails();
           this.resetForm();
         },
         (error:any) => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid Limit ID");
+      this.toastr.error("Invalid Limit ID");
     }
   }
 
@@ -185,7 +187,7 @@ export class AssignLimitComponent implements OnInit {
           this.currentLimitId = id;
         } else {
           console.error("Limit not found for ID:", id); 
-          alert("Limit not found");
+          this.toastr.error("Limit not found");
         }
       },
       (error: any) => {
@@ -214,7 +216,7 @@ export class AssignLimitComponent implements OnInit {
       else{
         //this.editCountry(this.currentCountryId);
         this.updateLimit();
-        alert("Limit Updated Successfully");
+        this.toastr.success("Limit Updated Successfully");
         this.getLimitDetails();
         this.resetForm();
         obj.id=0;
@@ -226,7 +228,7 @@ export class AssignLimitComponent implements OnInit {
     debugger;
     this.assignLimitService.deleteLimit(id)
       .subscribe(res => {
-        alert("Limit Deleted Successfully");
+        this.toastr.success("Limit Deleted Successfully");
         this.LimitDetails = this.LimitDetails.filter((limit: any) => limit.id !== id);
       });
   }

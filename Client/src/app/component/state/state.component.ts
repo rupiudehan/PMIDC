@@ -4,6 +4,7 @@ import { CountryService } from '../country/country.service';
 import { StateService } from './state.service';
 import { stateModel } from './state.model';
 import { state } from '@angular/animations';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-state',
@@ -24,7 +25,8 @@ export class StateComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder, 
     private countryService: CountryService,
-    private stateService: StateService
+    private stateService: StateService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -73,7 +75,7 @@ export class StateComponent implements OnInit {
     const duplicate = this.StateDetails?.some(s => s.stateName?.toLowerCase() == stateName.toLowerCase() && s.countryId == countryId);
 
     if (duplicate) {
-      alert("State already exists in the selected country");
+      this.toastr.error("State already exists in the selected country");
       return;
     }
 
@@ -85,12 +87,12 @@ export class StateComponent implements OnInit {
       this.stateService.postState(this.stateModelObj)
         .subscribe(res => {
           console.log(res);
-          alert("State Added Successfully");
+          this.toastr.success("State Added Successfully");
           this.getStateDetails();
           this.resetForm();
         },
         err => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
       this.updateState();
@@ -104,7 +106,7 @@ export class StateComponent implements OnInit {
     const duplicate = this.StateDetails?.some(s => s.stateName?.toLowerCase() === stateName.toLowerCase() && s.countryId === countryId && s.id !== this.currentStateId);
 
     if (duplicate) {
-      alert("State already exists in the selected country");
+      this.toastr.error("State already exists in the selected country");
       return;
     }
 
@@ -116,15 +118,15 @@ export class StateComponent implements OnInit {
       this.stateService.updateState(this.stateModelObj)
         .subscribe((res:any) => {
           console.log(res);
-          alert("State Updated Successfully");
+          this.toastr.success("State Updated Successfully");
           this.getStateDetails();
           this.resetForm();
         },
         (error:any) => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid state ID");
+      this.toastr.error("Invalid state ID");
     }
   }
 
@@ -148,7 +150,7 @@ export class StateComponent implements OnInit {
           this.currentStateId = id;
         } else {
           console.error("State not found for ID:", id); 
-          alert("State not found");
+          this.toastr.error("State not found");
         }
       },
       (error: any) => {
@@ -177,7 +179,7 @@ export class StateComponent implements OnInit {
       else{
         //this.editCountry(this.currentCountryId);
         this.updateState();
-        alert("State Updated Successfully");
+        this.toastr.success("State Updated Successfully");
         this.getStateDetails();
         this.resetForm();
         obj.id=0;
@@ -188,7 +190,7 @@ export class StateComponent implements OnInit {
   deleteState(id: number) {
     this.stateService.deleteState(id)
       .subscribe(res => {
-        alert("State Deleted Successfully");
+        this.toastr.success("State Deleted Successfully");
         this.StateDetails = this.StateDetails.filter((state: any) => state.id !== id);
       });
   }

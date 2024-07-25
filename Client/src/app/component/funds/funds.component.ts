@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup , FormBuilder, Validators } from '@angular/forms';
 import { FundsModel } from './funds.model';
 import { FundsService } from './funds.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-funds',
@@ -21,7 +22,8 @@ export class FundsComponent {
   row: any;
 
   constructor (private FormBuilder: FormBuilder,
-    private api :FundsService) { }
+    private api :FundsService,
+    private toastr: ToastrService) { }
    
   ngOnInit(): void {
     this.getFundDetails();
@@ -51,7 +53,7 @@ export class FundsComponent {
 
     if( fnds === null || fnds === 0)
       {
-           alert("Please Enter Amount");
+           this.toastr.warning("Please Enter Amount");
       }
 
     else{this.api.postFunds(this.fundsModelObj)
@@ -59,13 +61,13 @@ export class FundsComponent {
       console.log(res);
       if(this.fundsModelObj.Funds==0 || this.fundsModelObj.Funds === null){}
       else{
-      alert("Funds Added Successfully")
+      this.toastr.success("Funds Added Successfully")
       this.getFundDetails()
       this.formValue.reset()
     }
     },
     err=>{
-      alert("something went wrong")
+      this.toastr.error("something went wrong")
     })}
   }
 
@@ -79,7 +81,7 @@ onSubmit(obj :any){
     else{
       //this.editCountry(this.currentCountryId);
       this.updateFunds(obj);
-      alert("Fund Updated Successfully");
+      this.toastr.success("Fund Updated Successfully");
       this.getFundDetails();
       this.resetForm();
       obj.id=0;
@@ -113,7 +115,7 @@ onSubmit(obj :any){
   deleteFunds(id: number) {
     this.api.deleteFunds(id)
       .subscribe((res: any) => { 
-        alert("Funds Deleted Successfully");
+        this.toastr.success("Funds Deleted Successfully");
         this.FundDetails = this.FundDetails.filter((funds: any) => funds.id !== id);
         
       });
@@ -127,7 +129,7 @@ onSubmit(obj :any){
     const duplicate = this.FundDetails?.some(f => f.Funds?.toLowerCase() === funds.toLowerCase() && f.id !== this.currentFundId);
   
     if (duplicate) {
-      alert("Fund already exists");
+      this.toastr.error("Fund already exists");
       return;
     }
   
@@ -142,10 +144,10 @@ onSubmit(obj :any){
         
         },
         err => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid Fund ID");
+      this.toastr.error("Invalid Fund ID");
     }
   }
 

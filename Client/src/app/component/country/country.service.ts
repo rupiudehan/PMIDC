@@ -11,6 +11,7 @@ export class CountryService {
   
 
   deleteCountry(id: number){
+    debugger
     return this.http.delete<any>(`http://localhost:3000/api/countries/${id}`)
   }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RolesService } from './roles.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RoleModel } from './roles.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-roles',
@@ -22,7 +23,8 @@ export class RolesComponent {
   row: any;
 
   constructor (private FormBuilder: FormBuilder,
-    private api :RolesService) { }
+    private api :RolesService,
+    private toastr: ToastrService) { }
    
   ngOnInit(): void {
     this.getRoleDetails();
@@ -41,7 +43,7 @@ export class RolesComponent {
     const duplicate = this.RoleDetails?.some(r => r.roleName?.toLowerCase() === roleName.toLowerCase());
 
     if (duplicate) {
-      alert("Role already exists");
+      this.toastr.error("Role already exists");
       return;
     }
     
@@ -52,23 +54,23 @@ export class RolesComponent {
 
     if( role == "" || role == '0')
       {
-           alert("Please Enter a Role");
+        this.toastr.warning("Please Enter a Role");
       }
 
     else {this.api.postRole(this.RoleModelObj)
     .subscribe(res=>{
       console.log(res);
       if(this.RoleModelObj.RoleName.length==0 || this.RoleModelObj.RoleName.trim()=== ''){
-        alert("Role Cannot be null")
+        this.toastr.warning("Role Cannot be null")
       }
       else{
-      alert("Role Added Successfully")
-      this.getRoleDetails()
-      this.formVal.reset()
+       this.toastr.success("Role Added Successfully")
+       this.getRoleDetails()
+       this.formVal.reset()
     }
     },
     (error: any)=>{
-      alert("something went wrong")
+      this.toastr.error("something went wrong")
     })}
   }
 
@@ -82,7 +84,7 @@ onSubmit(obj :any){
     else{
       
       this.updateRole(obj);
-      alert("Role Updated Successfully");
+      this.toastr.success("Role Updated Successfully");
       this.getRoleDetails();
       this.resetForm();
       obj.id=0;
@@ -116,7 +118,7 @@ onSubmit(obj :any){
   deleteRole(id: number) {
     this.api.deleteRole(id)
       .subscribe((res: any) => { 
-        alert("Role Deleted Successfully");
+        this.toastr.success("Role Deleted Successfully");
         this.RoleDetails = this.RoleDetails.filter((role: any) => role.id !== id);
         
       });
@@ -130,7 +132,7 @@ onSubmit(obj :any){
     const duplicate = this.RoleDetails?.some(r => r.roleName?.toLowerCase() === roleName.toLowerCase());
   
     if (duplicate) {
-      alert("Role already exists");
+      this.toastr.error("Role already exists");
       return;
     }
   
@@ -145,10 +147,10 @@ onSubmit(obj :any){
         
         },
         err => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid Role ID");
+      this.toastr.error("Invalid Role ID");
     }
   }
 

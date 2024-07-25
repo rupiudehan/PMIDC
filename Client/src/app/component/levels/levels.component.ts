@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 import { LevelModel } from './level.model';
 import { LevelService } from './level.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-levels',
@@ -24,7 +25,8 @@ row: any;
 level: any;
 
 constructor (private FormBuilder: FormBuilder,
-  private api :LevelService) { }
+  private api :LevelService,
+  private toastr: ToastrService) { }
 
 ngOnInit(): void {
     this.getLevelDetails();
@@ -44,7 +46,7 @@ ngOnInit(): void {
     const duplicate = this.LevelDetails?.some(l => l.levelName?.toLowerCase() === levelName.toLowerCase());
 
     if (duplicate) {
-      alert("Level already exists");
+      this.toastr.error("Level already exists");
       return;
     }
     
@@ -55,23 +57,23 @@ ngOnInit(): void {
 
     if( level == "" || level == '0')
       {
-           alert("Please Enter a Level");
+           this.toastr.warning("Please Enter a Level");
       }
 
     else{this.api.postLevel(this.levelModelObj)
     .subscribe((res: any)=>{
       console.log(res);
       if(this.levelModelObj.LevelName.length==0 || this.levelModelObj.LevelName.trim()=== ''){
-        alert("Level Cannot be null")
+        this.toastr.warning("Level Cannot be null")
       }
       else{
-      alert("Level Added Successfully")
+        this.toastr.success("Level Added Successfully")
       this.getLevelDetails()
       this.formValue.reset()
     }
     },
     (error: any)=>{
-      alert("something went wrong")
+      this.toastr.error("something went wrong")
     })}
   }
 
@@ -85,7 +87,7 @@ onSubmit(obj :any){
     else{
       // this.editLevel(this.currentLevelId);
       this.updateLevel(obj);
-      alert("Level Updated Successfully");
+      this.toastr.success("Level Updated Successfully");
       this.getLevelDetails();
       this.resetForm();
       obj.id=0;
@@ -119,7 +121,7 @@ onSubmit(obj :any){
   deleteLevel(id: number) {
     this.api.deleteLevel(id)
       .subscribe((res: any) => { 
-        alert("Level Deleted Successfully");
+        this.toastr.success("Level Deleted Successfully");
         this.LevelDetails = this.LevelDetails.filter((level: any) => level.id !== id);
         
       });
@@ -134,7 +136,7 @@ onSubmit(obj :any){
 
   
     if (duplicate) {
-      alert("Level already exists");
+      this.toastr.error("Level already exists");
       return;
     }
   
@@ -149,10 +151,10 @@ onSubmit(obj :any){
         
         },
         (error: any) => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid Level ID");
+      this.toastr.error("Invalid Level ID");
     }
   }
 

@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { componentModel } from './sub-component.model';
 import { SchemeService } from '../scheme/scheme.service';
 import { SubSchemeService } from '../sub-scheme/sub-scheme.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sub-component',
@@ -26,7 +27,8 @@ export class SubComponentComponent implements OnInit {
     private formBuilder: FormBuilder, 
     private schemeService: SchemeService,
     private subSchemeService: SubSchemeService,
-    private SubComponentService: SubComponentService
+    private SubComponentService: SubComponentService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -87,7 +89,7 @@ export class SubComponentComponent implements OnInit {
     const duplicate = this.SubComponentDetails?.some(s => s.subComponent?.toLowerCase() == subComponent.toLowerCase() && s.componentCode?.toLowerCase() == componentCode.toLowerCase() && s.schemeId == schemeId && s.subSchemeId == subSchemeId);
 
     if (duplicate) {
-      alert("Sub-Component already exists in the selected Scheme");
+      this.toastr.error("Sub-Component already exists in the selected Scheme");
       return;
     }
 
@@ -101,12 +103,12 @@ export class SubComponentComponent implements OnInit {
       this.SubComponentService.postSubComponent(this.componentModelObj)
         .subscribe(res => {
           console.log(res);
-          alert("Sub-Component Added Successfully");
+          this.toastr.success("Sub-Component Added Successfully");
           this.getSubComponentDetails();
           this.resetForm();
         },
         err => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
       this.updateSubComponent();
@@ -122,7 +124,7 @@ export class SubComponentComponent implements OnInit {
     const duplicate = this.SubComponentDetails?.some(s =>  s.subComponent?.toLowerCase() == subComponent.toLowerCase() && s.componentCode?.toLowerCase() == componentCode.toLowerCase() && s.schemeId == schemeId && s.subSchemeId == subSchemeId);
 
     if (duplicate) {
-      alert("Sub-Component already exists in the selected Scheme");
+      this.toastr.error("Sub-Component already exists in the selected Scheme");
       return;
     }
 
@@ -136,15 +138,15 @@ export class SubComponentComponent implements OnInit {
       this.SubComponentService.updateSubComponent(this.componentModelObj)
         .subscribe((res:any) => {
           console.log(res);
-          alert("Sub-Component Updated Successfully");
+          this.toastr.success("Sub-Component Updated Successfully");
           this.getSubComponentDetails();
           this.resetForm();
         },
         (error:any) => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid Sub-Component ID");
+      this.toastr.error("Invalid Sub-Component ID");
     }
   }
 
@@ -170,7 +172,7 @@ export class SubComponentComponent implements OnInit {
           this.currentSubComponentId = id;
         } else {
           console.error("Sub-Component not found for ID:", id); 
-          alert("Sub-Component not found");
+          this.toastr.error("Sub-Component not found");
         }
       },
       (error: any) => {
@@ -199,7 +201,7 @@ export class SubComponentComponent implements OnInit {
       else{
         //this.editCountry(this.currentCountryId);
         this.updateSubComponent();
-        alert("Sub-Component Updated Successfully");
+        this.toastr.success("Sub-Component Updated Successfully");
         this.getSubComponentDetails();
         this.resetForm();
         obj.id=0;
@@ -210,7 +212,7 @@ export class SubComponentComponent implements OnInit {
   deleteSubComponent(id: number) {
     this.SubComponentService.deleteSubComponent(id)
       .subscribe(res => {
-        alert("Sub-Component Deleted Successfully");
+        this.toastr.success("Sub-Component Deleted Successfully");
         this.SubComponentDetails = this.SubComponentDetails.filter((subComponent: any) => subComponent.id !== id);
       });
   }

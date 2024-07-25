@@ -59,19 +59,31 @@ const countryController = {
         }
     },
     deleteCountry: async (req, res) => {
-        const { id } = req.params;
-        try {
-            pool.query(`DELETE from country where id= ${id}`, (error, results) => {
-                if (error) {
-                  throw error
-                }
-                res.status(200).json({ message: 'Country deleted successfully' });
-              })
-        } catch (err) {
-            console.error('Error deleting country:', err);
-            res.status(500).json({ error: 'Failed to delete country' });
-        }
-    },
+      const { id } = req.params;
+      try {
+    // Check for references in the state table first
+    pool.query(`SELECT COUNT(*) AS count FROM state WHERE "countryId" = ${id}`,  (error, results1) => {
+      if (error) {
+          console.error('Error querying state table:', error);
+          return res.status(500).json({ error: 'Failed to check references in state table' });
+      }})
+        const count = results1[0].count;
+        if (count > 0) {
+            return res.status(400).json({ error: 'Cannot delete country. It is associated with other tables as a foreign key.' });
+        } else {
+          pool.query(`DELETE from country where id= ${id}`, (error, results) => {
+              if (error) {
+                throw error
+              }
+              res.status(200).json({ message: 'Country deleted successfully' });
+            })}
+      } catch (err) {
+          console.error('Error deleting country:', err);
+          res.status(500).json({ error: 'Failed to delete country' });
+      }
+  },
+
+  
 
     getCountrybyid: async (req, res) => {
       const {id} = req.params;

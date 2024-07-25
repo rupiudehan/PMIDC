@@ -4,6 +4,7 @@ import { RolesService } from '../roles/roles.service';
 import { LevelService } from '../levels/level.service';
 import { UsersService } from './users.service';
 import { userModel } from './users.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users',
@@ -26,7 +27,8 @@ export class UsersComponent implements OnInit {
     private formBuilder: FormBuilder, 
     private roleService: RolesService,
     private levelService: LevelService,
-    private userService: UsersService
+    private userService: UsersService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -89,7 +91,7 @@ export class UsersComponent implements OnInit {
     const duplicate = this.UserDetails?.some(u => u.agencyName?.toLowerCase() == agencyName.toLowerCase() && u.roleId == roleId && u.levelId == levelId && u.email?.toLowerCase() == email.toLowerCase());
 
     if (duplicate) {
-      alert("User already exists.");
+      this.toastr.warning("User already exists.");
       return;
     }
 
@@ -104,12 +106,12 @@ export class UsersComponent implements OnInit {
       this.userService.postUser(this.userModelObj)
         .subscribe((res:any) => {
           console.log(res);
-          alert("User Added Successfully");
+          this.toastr.success("User Added Successfully");
           this.getUserDetails();
           this.resetForm();
         },
         (error:any) => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
       this.updateUser();
@@ -126,7 +128,7 @@ export class UsersComponent implements OnInit {
     const duplicate = this.UserDetails?.some(u => u.agencyName?.toLowerCase() === agencyName.toLowerCase() && u.roleId === roleId && u.levelId === levelId && u.email.toLowerCase() === email.toLowerCase() && u.id !== this.currentUserId);
 
     if (duplicate) {
-      alert("State already exists in the selected country");
+      this.toastr.error("State already exists in the selected country");
       return;
     }
 
@@ -141,15 +143,15 @@ export class UsersComponent implements OnInit {
       this.userService.updateUser(this.userModelObj)
         .subscribe((res:any) => {
           console.log(res);
-          alert("User Updated Successfully");
+          this.toastr.success("User Updated Successfully");
           this.getUserDetails();
           this.resetForm();
         },
         (error:any) => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid User ID");
+      this.toastr.error("Invalid User ID");
     }
   }
 
@@ -176,7 +178,7 @@ export class UsersComponent implements OnInit {
           this.currentUserId = id;
         } else {
           console.error("User not found for ID:", id); 
-          alert("User not found");
+          this.toastr.error("User not found");
         }
       },
       (error: any) => {
@@ -205,7 +207,7 @@ export class UsersComponent implements OnInit {
       else{
         //this.editCountry(this.currentCountryId);
         this.updateUser();
-        alert("User Updated Successfully");
+        this.toastr.success("User Updated Successfully");
         this.getUserDetails();
         this.resetForm();
         obj.id=0;
@@ -216,7 +218,7 @@ export class UsersComponent implements OnInit {
   deleteUser(id: number) {
     this.userService.deleteUser(id)
       .subscribe((res:any) => {
-        alert("User Deleted Successfully");
+        this.toastr.success("User Deleted Successfully");
         this.UserDetails = this.UserDetails.filter((user: any) => user.id !== id);
       });
   }

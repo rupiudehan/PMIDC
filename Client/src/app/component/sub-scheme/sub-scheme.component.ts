@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { subSchemeModel } from './sub-scheme.model';
 import { SchemeService } from '../scheme/scheme.service';
 import { SubSchemeService } from './sub-scheme.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sub-scheme',
@@ -22,7 +23,8 @@ export class SubSchemeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder, 
     private schemeService: SchemeService,
-    private subSchemeService: SubSchemeService
+    private subSchemeService: SubSchemeService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -71,7 +73,7 @@ export class SubSchemeComponent implements OnInit {
     const duplicate = this.subSchemeDetails?.some(s => s.subScheme?.toLowerCase() == subScheme.toLowerCase() && s.schemeId == schemeId);
 
     if (duplicate) {
-      alert("Sub-Scheme already exists in the selected Scheme");
+      this.toastr.error("Sub-Scheme already exists in the selected Scheme");
       return;
     }
 
@@ -83,12 +85,12 @@ export class SubSchemeComponent implements OnInit {
       this.subSchemeService.postSubScheme(this.subSchemeModelObj)
         .subscribe(res => {
           console.log(res);
-          alert("Sub-Scheme Added Successfully");
+          this.toastr.success("Sub-Scheme Added Successfully");
           this.getSubSchemeDetails();
           this.resetForm();
         },
         err => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
       this.updateSubScheme();
@@ -102,7 +104,7 @@ export class SubSchemeComponent implements OnInit {
     const duplicate = this.subSchemeDetails?.some(s => s.subScheme?.toLowerCase() === subScheme.toLowerCase() && s.schemeId === schemeId && s.id !== this.currentSubSchemeId);
 
     if (duplicate) {
-      alert("Sub-Scheme already exists in the selected Scheme");
+      this.toastr.error("Sub-Scheme already exists in the selected Scheme");
       return;
     }
 
@@ -114,15 +116,15 @@ export class SubSchemeComponent implements OnInit {
       this.subSchemeService.updateSubScheme(this.subSchemeModelObj)
         .subscribe((res:any) => {
           console.log(res);
-          alert("Sub-Scheme Updated Successfully");
+          this.toastr.success("Sub-Scheme Updated Successfully");
           this.getSubSchemeDetails();
           this.resetForm();
         },
         (error:any) => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid Sub-Scheme ID");
+      this.toastr.error("Invalid Sub-Scheme ID");
     }
   }
 
@@ -146,7 +148,7 @@ export class SubSchemeComponent implements OnInit {
           this.currentSubSchemeId = id;
         } else {
           console.error("Sub-Scheme not found for ID:", id); 
-          alert("State not found");
+          this.toastr.error("State not found");
         }
       },
       (error: any) => {
@@ -175,7 +177,7 @@ export class SubSchemeComponent implements OnInit {
       else{
         //this.editCountry(this.currentCountryId);
         this.updateSubScheme();
-        alert("Sub-Scheme Updated Successfully");
+        this.toastr.success("Sub-Scheme Updated Successfully");
         this.getSubSchemeDetails();
         this.resetForm();
         obj.id=0;
@@ -186,7 +188,7 @@ export class SubSchemeComponent implements OnInit {
   deleteSubScheme(id: number) {
     this.subSchemeService.deleteSubScheme(id)
       .subscribe(res => {
-        alert("Sub-Scheme Deleted Successfully");
+        this.toastr.success("Sub-Scheme Deleted Successfully");
         this.subSchemeDetails = this.subSchemeDetails.filter((state: any) => state.id !== id);
       });
   }

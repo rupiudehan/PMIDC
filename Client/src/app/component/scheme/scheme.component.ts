@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SchemeService } from './scheme.service';
 import { SchemeModel } from './scheme.model';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class SchemeComponent {
 
 
   constructor (private FormBuilder: FormBuilder,
-    private api :SchemeService) { }
+    private api :SchemeService,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getSchemeDetails();
@@ -46,7 +48,7 @@ export class SchemeComponent {
     const duplicate = this.SchemeDetails?.some(c => c.schemeName?.toLowerCase() === schemeName.toLowerCase());
 
     if (duplicate) {
-      alert("Scheme already exists");
+      this.toastr.error("Scheme already exists");
       return;
     }
     
@@ -57,23 +59,23 @@ export class SchemeComponent {
 
     if( scheme == "" || scheme == '0')
       {
-           alert("Please Enter a scheme");
+        this.toastr.warning("Please Enter a scheme");
       }
 
     else{this.api.postScheme(this.schemeModelObj)
     .subscribe(res=>{
       console.log(res);
       if(this.schemeModelObj.SchemeName.length==0 || this.schemeModelObj.SchemeName.trim()=== ''){
-        alert("Scheme Cannot be null")
+        this.toastr.warning("Scheme Cannot be null")
       }
       else{
-      alert("Scheme Added Successfully")
+        this.toastr.success("Scheme Added Successfully")
       this.getSchemeDetails()
       this.formValue.reset()
     }
     },
     err=>{
-      alert("something went wrong")
+      this.toastr.error("something went wrong")
     })}
   }
 
@@ -87,7 +89,7 @@ onSubmit(obj :any){
     else{
       //this.editCountry(this.currentCountryId);
       this.updateScheme(obj);
-      alert("Scheme Updated Successfully");
+      this.toastr.success("Scheme Updated Successfully");
       this.getSchemeDetails();
       this.resetForm();
       obj.id=0;
@@ -135,7 +137,7 @@ onSubmit(obj :any){
     const duplicate = this.SchemeDetails?.some(c => c.schemeName?.toLowerCase() === schemeName.toLowerCase());
   
     if (duplicate) {
-      alert("Scheme already exists");
+      this.toastr.error("Scheme already exists");
       return;
     }
   
@@ -150,10 +152,10 @@ onSubmit(obj :any){
         
         },
         err => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid Scheme ID");
+      this.toastr.error("Invalid Scheme ID");
     }
   }
 

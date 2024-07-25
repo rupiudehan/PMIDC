@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CountryService } from './country.service';
 import { CountryModel } from './country.model';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-country',
@@ -25,7 +27,8 @@ export class CountryComponent {
   level: any;
 
   constructor (private FormBuilder: FormBuilder,
-    private api :CountryService) { }
+    private api :CountryService,
+    private toastr: ToastrService) { }
    
   ngOnInit(): void {
     this.getCountryDetails();
@@ -44,7 +47,7 @@ export class CountryComponent {
     const duplicate = this.CountryDetails?.some(c => c.countryName?.toLowerCase() === countryName.toLowerCase());
 
     if (duplicate) {
-      alert("Country already exists");
+      this.toastr.error("Country already exists");
       return;
     }
     
@@ -55,7 +58,7 @@ export class CountryComponent {
 
     if( country == "" || country == '0')
       {
-           alert("Please Enter a Country");
+           this.toastr.warning("Please Enter a Country");
       }
 
     else{this.api.postCountry(this.countryModelObj)
@@ -63,13 +66,13 @@ export class CountryComponent {
       console.log(res);
       if(this.countryModelObj.CountryName.length==0 || this.countryModelObj.CountryName.trim()=== ''){}
       else{
-      alert("Country Added Successfully")
+      this.toastr.success("Country Added Successfully")
       this.getCountryDetails()
       this.formValue.reset()
     }
     },
     err=>{
-      alert("something went wrong")
+      this.toastr.error("something went wrong")
     })}
   }
 
@@ -83,7 +86,7 @@ onSubmit(obj :any){
     else{
       //this.editCountry(this.currentCountryId);
       this.updateCountry(obj);
-      alert("Country Updated Successfully");
+      this.toastr.success("Country Updated Successfully");
       this.getCountryDetails();
       this.resetForm();
       obj.id=0;
@@ -115,13 +118,23 @@ onSubmit(obj :any){
   }
 
   deleteCountry(id: number) {
+    debugger;
     this.api.deleteCountry(id)
-      .subscribe((res: any) => { 
-        alert("Country Deleted Successfully");
-        this.CountryDetails = this.CountryDetails.filter((country: any) => country.id !== id);
-        
-      });
-  }
+      .subscribe(
+        (res: any) => {
+          this.toastr.success("Country Deleted Successfully");
+          this.CountryDetails = this.CountryDetails.filter((country: any) => country.id !== id);
+        },
+        (error: any) => {
+          if (error.status === 400 && error.error && error.error.error === 'Cannot delete country. It is associated with other details.') {
+            this.toastr.error("Cannot delete country. It is associated with other details.");
+          } else {
+            this.toastr.error("Failed to delete country. Please try again later.");
+          }
+        }
+      );
+}
+
 
   updateCountry(obj:any) {
     debugger;
@@ -131,7 +144,7 @@ onSubmit(obj :any){
     const duplicate = this.CountryDetails?.some(c => c.countryName?.toLowerCase() === countryName.toLowerCase());
 
     if (duplicate) {
-      alert("Country already exists");
+      this.toastr.error("Country already exists");
       return;
     }
   
@@ -146,10 +159,10 @@ onSubmit(obj :any){
         
         },
         err => {
-          alert("Something went wrong");
+          this.toastr.error("Something went wrong");
         });
     } else {
-      alert("Invalid country ID");
+      this.toastr.error("Invalid country ID");
     }
   }
 
