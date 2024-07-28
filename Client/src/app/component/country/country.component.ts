@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CountryService } from './country.service';
 import { CountryModel } from './country.model';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+
 
 
 @Component({
@@ -118,21 +120,37 @@ onSubmit(obj :any){
   }
 
   deleteCountry(id: number) {
-    debugger;
-    this.api.deleteCountry(id)
-      .subscribe(
-        (res: any) => {
-          this.toastr.success("Country Deleted Successfully");
-          this.CountryDetails = this.CountryDetails.filter((country: any) => country.id !== id);
-        },
-        (error: any) => {
-          if (error.status === 400 && error.error && error.error.error === 'Cannot delete country. It is associated with other details.') {
-            this.toastr.error("Cannot delete country. It is associated with other details.");
-          } else {
-            this.toastr.error("Failed to delete country. Please try again later.");
-          }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.api.deleteCountry(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("Country Deleted Successfully");
+                        this.CountryDetails = this.CountryDetails.filter((country: any) => country.id !== id);
+                    },
+                    (error: any) => {
+                        if (error.status === 400 && error.error && error.error.error === 'Cannot delete country. It is associated with other details.') {
+                            this.toastr.error("Cannot delete country. It is associated with other details.");
+                        } else {
+                            this.toastr.error("Cannot delete this country. It is associated with other details.");
+                        }
+                    }
+                );
         }
-      );
+    });
+}
+
+onAlphabetInputChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
 }
 
 
@@ -208,3 +226,5 @@ onSubmit(obj :any){
     );
   }
 }
+
+

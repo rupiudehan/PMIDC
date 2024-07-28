@@ -12,6 +12,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
+  onAlphabetInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+  }
   RoleDetails: any[] = [];
   LevelDetails: any[] = [];
   UserDetails: any[] = [];
@@ -76,47 +80,46 @@ export class UsersComponent implements OnInit {
     const roleId = this.formValue.value.roleId;
     const levelId = this.formValue.value.levelId;
 
-  //   const duplicates = this.StateDetails?.some(s => {
-  //     console.log('Checking state:', s.stateName, s.countryId);  // Log each state being checked
-  //     console.log('Comparison result:', 
-  //         s.stateName?.toLowerCase() === stateName.toLowerCase(), 
-  //         s.countryId == countryId
-  //     );
-  //     return s.stateName?.toLowerCase() === stateName.toLowerCase() && s.countryId == countryId;
-  // });
-
-  //console.log('Duplicate found:', duplicates); // Log the result of the duplicate check
-
-
-    const duplicate = this.UserDetails?.some(u => u.agencyName?.toLowerCase() == agencyName.toLowerCase() && u.roleId == roleId && u.levelId == levelId && u.email?.toLowerCase() == email.toLowerCase());
-
-    if (duplicate) {
-      this.toastr.warning("User already exists.");
-      return;
+    // Check if any input is null or empty
+    if (!agencyName || !email || !password || !roleId || !levelId) {
+        this.toastr.error("Please enter all the details");
+        return;
     }
 
-    this.userModelObj.agencyName = agencyName.trim();
-    this.userModelObj.email = email.trim();
-    this.userModelObj.password = password.trim();
+    const duplicate = this.UserDetails?.some(u => 
+        u.agencyName?.toLowerCase() === agencyName.toLowerCase() && 
+        u.roleId == roleId && 
+        u.levelId == levelId && 
+        u.email?.toLowerCase() === email.toLowerCase()
+    );
+
+    if (duplicate) {
+        this.toastr.warning("User already exists.");
+        return;
+    }
+
+    this.userModelObj.agencyName = agencyName;
+    this.userModelObj.email = email;
+    this.userModelObj.password = password;
     this.userModelObj.roleId = roleId;
     this.userModelObj.levelId = levelId;
 
     if (this.currentUserId == null || this.currentUserId == 0) {
-      this.userModelObj.id = ++this.lastUsedId;
-      this.userService.postUser(this.userModelObj)
-        .subscribe((res:any) => {
-          console.log(res);
-          this.toastr.success("User Added Successfully");
-          this.getUserDetails();
-          this.resetForm();
-        },
-        (error:any) => {
-          this.toastr.error("Something went wrong");
-        });
+        this.userModelObj.id = ++this.lastUsedId;
+        this.userService.postUser(this.userModelObj)
+            .subscribe((res:any) => {
+                console.log(res);
+                this.toastr.success("User Added Successfully");
+                this.getUserDetails();
+                this.resetForm();
+            },
+            (error:any) => {
+                this.toastr.error("Something went wrong");
+            });
     } else {
-      this.updateUser();
+        this.updateUser();
     }
-  }
+}
 
   updateUser() {
     debugger;

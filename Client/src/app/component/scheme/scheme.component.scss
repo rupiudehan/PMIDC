@@ -1,0 +1,24 @@
+.btn-responsive {
+    width: 90%;
+    max-width: 200px;
+    margin: 5px;
+}
+
+@media (max-width: 536px)   {
+    .btn-secondary {
+        font-size: small;
+    }
+    .btn-primary {
+        font-size: small;
+    }
+
+  }
+  @media (max-width: 375px)   {
+    .btn-secondary {
+        font-size: xx-small;
+    }
+    .btn-primary {
+        font-size: xx-small;
+    }
+
+  }

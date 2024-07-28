@@ -5,6 +5,7 @@ import { componentModel } from './sub-component.model';
 import { SchemeService } from '../scheme/scheme.service';
 import { SubSchemeService } from '../sub-scheme/sub-scheme.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sub-component',
@@ -12,6 +13,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./sub-component.component.scss']
 })
 export class SubComponentComponent implements OnInit {
+  onAlphabetInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+  }
   SchemeDetails: any[] = [];
   SubSchemeDetails: any[] = [];
   SubComponentDetails: any[] = [];
@@ -69,51 +74,51 @@ export class SubComponentComponent implements OnInit {
 
   postSubComponentDetails() {
     debugger;
-    const subComponent = this.formValue.value.subComponent.trim();
-    const componentCode = this.formValue.value.componentCode.trim();
+    const subComponent = this.formValue.value.subComponent?.trim();
+    const componentCode = this.formValue.value.componentCode?.trim();
     const schemeId = this.formValue.value.schemeId;
     const subSchemeId = this.formValue.value.subSchemeId;
 
-  //   const duplicates = this.StateDetails?.some(s => {
-  //     console.log('Checking state:', s.stateName, s.countryId);  // Log each state being checked
-  //     console.log('Comparison result:', 
-  //         s.stateName?.toLowerCase() === stateName.toLowerCase(), 
-  //         s.countryId == countryId
-  //     );
-  //     return s.stateName?.toLowerCase() === stateName.toLowerCase() && s.countryId == countryId;
-  // });
-
-  //console.log('Duplicate found:', duplicates); // Log the result of the duplicate check
-
-
-    const duplicate = this.SubComponentDetails?.some(s => s.subComponent?.toLowerCase() == subComponent.toLowerCase() && s.componentCode?.toLowerCase() == componentCode.toLowerCase() && s.schemeId == schemeId && s.subSchemeId == subSchemeId);
-
-    if (duplicate) {
-      this.toastr.error("Sub-Component already exists in the selected Scheme");
-      return;
+    // Check if any input is null or empty
+    if (!subComponent || !componentCode || !schemeId || !subSchemeId) {
+        this.toastr.error("Please enter all the details");
+        return;
     }
 
-    this.componentModelObj.subComponent = subComponent.trim();
-    this.componentModelObj.componentCode = componentCode.trim();
+    const duplicate = this.SubComponentDetails?.some(s => 
+        s.subComponent?.toLowerCase() === subComponent.toLowerCase() && 
+        s.componentCode?.toLowerCase() === componentCode.toLowerCase() && 
+        s.schemeId == schemeId && 
+        s.subSchemeId == subSchemeId
+    );
+
+    if (duplicate) {
+        this.toastr.error("Sub-Component already exists in the selected Scheme");
+        return;
+    }
+
+    this.componentModelObj.subComponent = subComponent;
+    this.componentModelObj.componentCode = componentCode;
     this.componentModelObj.schemeId = schemeId;
     this.componentModelObj.subSchemeId = subSchemeId;
 
     if (this.currentSubComponentId == null || this.currentSubComponentId == 0) {
-      this.componentModelObj.id = ++this.lastUsedId;
-      this.SubComponentService.postSubComponent(this.componentModelObj)
-        .subscribe(res => {
-          console.log(res);
-          this.toastr.success("Sub-Component Added Successfully");
-          this.getSubComponentDetails();
-          this.resetForm();
-        },
-        err => {
-          this.toastr.error("Something went wrong");
-        });
+        this.componentModelObj.id = ++this.lastUsedId;
+        this.SubComponentService.postSubComponent(this.componentModelObj)
+            .subscribe(res => {
+                console.log(res);
+                this.toastr.success("Sub-Component Added Successfully");
+                this.getSubComponentDetails();
+                this.resetForm();
+            },
+            err => {
+                this.toastr.error("Something went wrong");
+            });
     } else {
-      this.updateSubComponent();
+        this.updateSubComponent();
     }
-  }
+}
+
 
   updateSubComponent() {
     debugger;
@@ -210,12 +215,30 @@ export class SubComponentComponent implements OnInit {
   }  
 
   deleteSubComponent(id: number) {
-    this.SubComponentService.deleteSubComponent(id)
-      .subscribe(res => {
-        this.toastr.success("Sub-Component Deleted Successfully");
-        this.SubComponentDetails = this.SubComponentDetails.filter((subComponent: any) => subComponent.id !== id);
-      });
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.SubComponentService.deleteSubComponent(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("Sub-Component Deleted Successfully");
+                        this.SubComponentDetails = this.SubComponentDetails.filter((subComponent: any) => subComponent.id !== id);
+                    },
+                    (error: any) => {
+                        this.toastr.error("Cannot delete this sub-component. It is associated with other details.");
+                    }
+                );
+        }
+    });
+}
+
 
   editing(id: number) {
     this.editSubComponent(id);

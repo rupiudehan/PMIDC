@@ -61,16 +61,21 @@ const roleController = {
     deleteRole: async (req, res) => {
         const { id } = req.params;
         try {
-            pool.query(`DELETE from role where id= ${id}`, (error, results) => {
-                if (error) {
-                  throw error
-                }
-                res.status(200).json({ message: 'Role deleted successfully' });
-              })
-        } catch (err) {
-            console.error('Error deleting role:', err);
-            res.status(500).json({ error: 'Failed to delete role' });
-        }
+          // Check for references in the state table first
+          const results1 = await pool.query(`SELECT COUNT(*) AS count FROM users WHERE "roleId" = $1`, [id]);
+          const count = results1.rows[0].count;
+  
+          if (count > 0) {
+              return res.status(400).json({ error: 'Cannot delete role. It is associated with other tables as a foreign key.' });
+          } else {
+              // Proceed to delete the country
+              await pool.query(`DELETE FROM role WHERE id = $1`, [id]);
+              res.status(200).json({ message: 'Role deleted successfully' });
+          }
+      } catch (err) {
+          console.error('Error deleting role:', err);
+          res.status(500).json({ error: 'Failed to delete role' });
+      }
     },
 
     getRolebyid: async (req, res) => {

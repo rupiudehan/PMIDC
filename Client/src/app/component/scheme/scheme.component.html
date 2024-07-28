@@ -11,13 +11,24 @@
            <div class="row" class="row justify-content-center">
             <div class="col-md-6 mb-3">
               <label class="form-label" for="schemeName"><h5>Scheme Name</h5></label>
-              <input type="text" class="form-control" id="schemeNmae" formControlName="SchemeName" placeholder="Enter Scheme Name" required maxlength="150">
+              <input type="text" class="form-control" id="schemeNmae" formControlName="SchemeName" (input)="onAlphabetInputChange($event)" placeholder="Enter Scheme Name" required maxlength="150">
+              <div *ngIf="formValue.controls['SchemeName'].invalid && (formValue.controls['SchemeName'].dirty || formValue.controls['SchemeName'].touched)" class="text-danger">
+                <div *ngIf="formValue.controls['SchemeName'].errors?.['required']">
+                  Scheme is required.
+                </div>
+                <div *ngIf="formValue.controls['SchemeName'].errors?.['noSpecialCharactersAndNumbers']">
+                  Only letters are allowed.
+                </div>
+                <div *ngIf="formValue.controls['SchemeName'].errors?.['maxlength']">
+                  Maximum length is 150 characters.
+                </div>
+              </div>
             </div>
             </div>
             
             <div class="row justify-content-center">
-             <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
-             <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px"(click)="resetForm()">Reset</button>
+             <button type="submit" class="btn btn-primary btn-block btn-responsive  " style="width: 15%">Add</button>
+             <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px"(click)="resetForm()">Reset</button>
             </div>
           </form>
        <div class="card-body p-5">

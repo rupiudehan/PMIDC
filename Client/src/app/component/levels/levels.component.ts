@@ -3,6 +3,7 @@ import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 import { LevelModel } from './level.model';
 import { LevelService } from './level.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-levels',
@@ -10,6 +11,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./levels.component.scss']
 })
 export class LevelsComponent {
+  onAlphabetInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+  }
 
 
 LevelDetails: any[] = [];
@@ -49,6 +54,8 @@ ngOnInit(): void {
       this.toastr.error("Level already exists");
       return;
     }
+
+    
     
 
     this.levelModelObj.id = ++this.lastUsedId;
@@ -119,13 +126,34 @@ onSubmit(obj :any){
   }
 
   deleteLevel(id: number) {
-    this.api.deleteLevel(id)
-      .subscribe((res: any) => { 
-        this.toastr.success("Level Deleted Successfully");
-        this.LevelDetails = this.LevelDetails.filter((level: any) => level.id !== id);
-        
-      });
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.api.deleteLevel(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("Level Deleted Successfully");
+                        this.LevelDetails = this.LevelDetails.filter((level: any) => level.id !== id);
+                    },
+                    (error: any) => {
+                        if (error.status === 400 && error.error && error.error.error === 'Cannot delete level. It is associated with other details.') {
+                            this.toastr.error("Cannot delete level. It is associated with other details.");
+                        } else {
+                            this.toastr.error("Cannot delete this level. It is associated with other details.");
+                        }
+                    }
+                );
+        }
+    });
+}
+
 
   updateLevel(obj:any) {
     debugger;
@@ -199,4 +227,8 @@ onSubmit(obj :any){
       }
     );
   }
+}
+
+function onAlphabetInputChange(event: Event | undefined, Event: { new(type: string, eventInitDict?: EventInit): Event; prototype: Event; readonly NONE: 0; readonly CAPTURING_PHASE: 1; readonly AT_TARGET: 2; readonly BUBBLING_PHASE: 3; }) {
+  throw new Error('Function not implemented.');
 }

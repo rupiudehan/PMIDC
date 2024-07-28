@@ -31,7 +31,7 @@ const pool = new Pool({
     },
     getAllSubScheme: async (req, res) => {
         try {
-            pool.query('SELECT * FROM sub_scheme ss INNER JOIN scheme s ON ss."schemeId" = s.id', (error, results) => {
+            pool.query('SELECT ss.id, ss."subScheme", ss."schemeId", s."schemeName" FROM sub_scheme ss INNER JOIN scheme s ON ss."schemeId" = s.id', (error, results) => {
                 if (error) {
                   throw error
                 }
@@ -63,16 +63,21 @@ const pool = new Pool({
     deleteSubScheme: async (req, res) => {
         const { id } = req.params;
         try {
-            pool.query(`DELETE from sub_scheme where id= ${id}`, (error, results) => {
-                if (error) {
-                  throw error
-                }
-                res.status(200).json({ message: 'Sub-Scheme deleted successfully' });
-              })
-        } catch (err) {
-            console.error('Error deleting Sub-Scheme', err);
-            res.status(500).json({ error: 'Failed to delete Sub-Scheme' });
-        }
+          // Check for references in the state table first
+          const results1 = await pool.query(`SELECT COUNT(*) AS count FROM sub_component WHERE "subSchemeId" = $1`, [id]);
+          const count = results1.rows[0].count;
+  
+          if (count > 0) {
+              return res.status(400).json({ error: 'Cannot delete sub-scheme. It is associated with other tables as a foreign key.' });
+          } else {
+              // Proceed to delete the country
+              await pool.query(`DELETE FROM sub_scheme WHERE id = $1`, [id]);
+              res.status(200).json({ message: 'Sub-Scheme deleted successfully' });
+          }
+      } catch (err) {
+          console.error('Error deleting sub-scheme', err);
+          res.status(500).json({ error: 'Failed to delete sub-scheme' });
+      }
     },
 
     getSubSchemebyid: async (req, res) => {

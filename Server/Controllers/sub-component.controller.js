@@ -33,7 +33,7 @@ const pool = new Pool({
     },
     getAllSubComponent: async (req, res) => {
         try {
-            pool.query('SELECT * FROM sub_component sc INNER JOIN scheme s ON sc."schemeId" = s.id inner join sub_scheme ss on sc."subSchemeId" = ss.id;', (error, results) => {
+            pool.query('SELECT sc.id, sc."schemeId", sc."subSchemeId", sc."subComponent", sc."componentCode", s."schemeName", ss."subScheme" FROM sub_component sc INNER JOIN scheme s ON sc."schemeId" = s.id inner join sub_scheme ss on sc."subSchemeId" = ss.id;', (error, results) => {
                 if (error) {
                   throw error
                 }

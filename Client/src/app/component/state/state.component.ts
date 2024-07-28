@@ -5,6 +5,7 @@ import { StateService } from './state.service';
 import { stateModel } from './state.model';
 import { state } from '@angular/animations';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-state',
@@ -60,44 +61,38 @@ export class StateComponent implements OnInit {
     const stateName = this.formValue.value.stateName.trim();
     const countryId = this.formValue.value.countryId;
 
-  //   const duplicates = this.StateDetails?.some(s => {
-  //     console.log('Checking state:', s.stateName, s.countryId);  // Log each state being checked
-  //     console.log('Comparison result:', 
-  //         s.stateName?.toLowerCase() === stateName.toLowerCase(), 
-  //         s.countryId == countryId
-  //     );
-  //     return s.stateName?.toLowerCase() === stateName.toLowerCase() && s.countryId == countryId;
-  // });
-
-  //console.log('Duplicate found:', duplicates); // Log the result of the duplicate check
-
+    if (!stateName) {
+        this.toastr.error("Please enter state name");
+        return;
+    }
 
     const duplicate = this.StateDetails?.some(s => s.stateName?.toLowerCase() == stateName.toLowerCase() && s.countryId == countryId);
 
     if (duplicate) {
-      this.toastr.error("State already exists in the selected country");
-      return;
+        this.toastr.error("State already exists in the selected country");
+        return;
     }
 
-    this.stateModelObj.stateName = stateName.trim();
+    this.stateModelObj.stateName = stateName;
     this.stateModelObj.countryId = countryId;
 
     if (this.currentStateId == null || this.currentStateId == 0) {
-      this.stateModelObj.id = ++this.lastUsedId;
-      this.stateService.postState(this.stateModelObj)
-        .subscribe(res => {
-          console.log(res);
-          this.toastr.success("State Added Successfully");
-          this.getStateDetails();
-          this.resetForm();
-        },
-        err => {
-          this.toastr.error("Something went wrong");
-        });
+        this.stateModelObj.id = ++this.lastUsedId;
+        this.stateService.postState(this.stateModelObj)
+            .subscribe(res => {
+                console.log(res);
+                this.toastr.success("State Added Successfully");
+                this.getStateDetails();
+                this.resetForm();
+            },
+            err => {
+                this.toastr.error("Something went wrong");
+            });
     } else {
-      this.updateState();
+        this.updateState();
     }
-  }
+}
+
 
   updateState() {
     debugger;
@@ -158,6 +153,11 @@ export class StateComponent implements OnInit {
       }
     );
   }
+
+  onAlphabetInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+  }
   
     
   resetForm() {
@@ -172,6 +172,10 @@ export class StateComponent implements OnInit {
   onSubmit(obj :any){
     debugger
     const id = this.formValue.value.id;
+
+    
+
+
     if(id==0|| id==null) 
       {
         this.postStateDetails();
@@ -188,12 +192,30 @@ export class StateComponent implements OnInit {
   }  
 
   deleteState(id: number) {
-    this.stateService.deleteState(id)
-      .subscribe(res => {
-        this.toastr.success("State Deleted Successfully");
-        this.StateDetails = this.StateDetails.filter((state: any) => state.id !== id);
-      });
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.stateService.deleteState(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("State Deleted Successfully");
+                        this.StateDetails = this.StateDetails.filter((state: any) => state.id !== id);
+                    },
+                    (error: any) => {
+                        this.toastr.error("Cannot delete this state. It is associated with other details.");
+                    }
+                );
+        }
+    });
+}
+
 
   editing(id: number) {
     this.editState(id);

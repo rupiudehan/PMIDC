@@ -3,6 +3,7 @@ import { RolesService } from './roles.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RoleModel } from './roles.model';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-roles',
@@ -10,6 +11,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent {
+  onAlphabetInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+  }
 
   RoleDetails: any[] = [];
   lastUsedId: number = 0; // Variable to store the last used ID
@@ -116,13 +121,34 @@ onSubmit(obj :any){
   }
 
   deleteRole(id: number) {
-    this.api.deleteRole(id)
-      .subscribe((res: any) => { 
-        this.toastr.success("Role Deleted Successfully");
-        this.RoleDetails = this.RoleDetails.filter((role: any) => role.id !== id);
-        
-      });
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.api.deleteRole(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("Role Deleted Successfully");
+                        this.RoleDetails = this.RoleDetails.filter((role: any) => role.id !== id);
+                    },
+                    (error: any) => {
+                        if (error.status === 400 && error.error && error.error.error === 'Cannot delete role. It is associated with other details.') {
+                            this.toastr.error("Cannot delete role. It is associated with other details.");
+                        } else {
+                            this.toastr.error("Cannot delete this role. It is associated with other details.");
+                        }
+                    }
+                );
+        }
+    });
+}
+
 
   updateRole(obj:any) {
     debugger;

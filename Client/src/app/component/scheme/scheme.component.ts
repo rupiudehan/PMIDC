@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SchemeService } from './scheme.service';
 import { SchemeModel } from './scheme.model';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -11,6 +12,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./scheme.component.scss']
 })
 export class SchemeComponent {
+  onAlphabetInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+  }
+  
 
   SchemeDetails: any[] = [];
   lastUsedId: number = 0; 
@@ -121,13 +127,34 @@ onSubmit(obj :any){
   }
 
   deleteScheme(id: number) {
-    this.api.deleteScheme(id)
-      .subscribe((res: any) => { 
-        alert("Scheme Deleted Successfully");
-        this.SchemeDetails = this.SchemeDetails.filter((scheme: any) => scheme.id !== id);
-        
-      });
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.api.deleteScheme(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("Scheme Deleted Successfully");
+                        this.SchemeDetails = this.SchemeDetails.filter((scheme: any) => scheme.id !== id);
+                    },
+                    (error: any) => {
+                        if (error.status === 400 && error.error && error.error.error === 'Cannot delete scheme. It is associated with other details.') {
+                            this.toastr.error("Cannot delete scheme. It is associated with other details.");
+                        } else {
+                            this.toastr.error("Cannot delete this scheme. It is associated with other details.");
+                        }
+                    }
+                );
+        }
+    });
+}
+
 
   updateScheme(obj:any) {
     debugger;

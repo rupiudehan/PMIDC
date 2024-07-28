@@ -17,12 +17,14 @@ import { FullComponent } from './layouts/full/full.component';
 
 import { NavigationComponent } from './shared/header/navigation.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
-
+import Swal from 'sweetalert2';
 import { Approutes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SpinnerComponent } from './shared/spinner.component';
 import { DefaultLayoutComponent } from './default-layout/default-layout.component';
 import { LoginLayoutComponent } from './login-layout/login-layout.component';
+import { AlphabetOnlyDirective } from './alphabet-only.directive';
+
 
 
 
@@ -36,6 +38,7 @@ import { LoginLayoutComponent } from './login-layout/login-layout.component';
     SpinnerComponent,
     DefaultLayoutComponent,
     LoginLayoutComponent,
+    AlphabetOnlyDirective
     
   ],
   imports: [

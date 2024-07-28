@@ -11,13 +11,24 @@
             <div class="row" class="row justify-content-center">
               <div class="col-md-5 mb-3">
                 <label class="form-label" for="roleName"><h5>Role:</h5></label>
-                <input type="text" class="form-control" id="roleName" formControlName="RoleName" placeholder="Enter Role" required maxlength="50">
+                <input type="text" class="form-control" id="roleName" formControlName="RoleName" (input)="onAlphabetInputChange($event)" placeholder="Enter Role" required maxlength="50">
+                <div *ngIf="formVal.controls['RoleName'].invalid && (formVal.controls['RoleName'].dirty || formVal.controls['RoleName'].touched)" class="text-danger">
+                  <div *ngIf="formVal.controls['RoleName'].errors?.['required']">
+                    Role is required.
+                  </div>
+                  <div *ngIf="formVal.controls['RoleName'].errors?.['noSpecialCharactersAndNumbers']">
+                    Only letters are allowed.
+                  </div>
+                  <div *ngIf="formVal.controls['RoleName'].errors?.['maxlength']">
+                    Maximum length is 150 characters.
+                  </div>
+                </div>
               </div>
             </div>
   
             <div class="row justify-content-center">
-              <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
-              <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px" (click)="resetForm()">Reset</button>
+              <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%">Add</button>
+              <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px" (click)="resetForm()">Reset</button>
          </div>
         </form>
          <div class="card-body p-5">

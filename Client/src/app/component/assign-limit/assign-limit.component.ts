@@ -6,6 +6,7 @@ import { UsersService } from '../users/users.service';
 import { SchemeService } from '../scheme/scheme.service';
 import { AssignLimitService } from './assign-limit.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-assign-limit',
@@ -86,23 +87,22 @@ export class AssignLimitComponent implements OnInit {
     const levelId = this.formValue.value.levelId;
     const userId = this.formValue.value.userId;
 
-  //   const duplicates = this.StateDetails?.some(s => {
-  //     console.log('Checking state:', s.stateName, s.countryId);  // Log each state being checked
-  //     console.log('Comparison result:', 
-  //         s.stateName?.toLowerCase() === stateName.toLowerCase(), 
-  //         s.countryId == countryId
-  //     );
-  //     return s.stateName?.toLowerCase() === stateName.toLowerCase() && s.countryId == countryId;
-  // });
+    // Check if any input is null or empty
+    if (!limit || !schemeId || !levelId || !userId) {
+        this.toastr.error("Please enter all the details");
+        return;
+    }
 
-  //console.log('Duplicate found:', duplicates); // Log the result of the duplicate check
-
-
-    // const duplicate = this.LimitDetails?.some(l => l.limit == limit && l.levelId == levelId && l.schemeId == schemeId && l.userId == userId);
+    // const duplicate = this.LimitDetails?.some(l => 
+    //     l.limit == limit && 
+    //     l.levelId == levelId && 
+    //     l.schemeId == schemeId && 
+    //     l.userId == userId
+    // );
 
     // if (duplicate) {
-    //   alert("Limit already assigned to the user");
-    //   return;
+    //     alert("Limit already assigned to the user");
+    //     return;
     // }
 
     this.limitModelObj.limit = limit;
@@ -111,22 +111,22 @@ export class AssignLimitComponent implements OnInit {
     this.limitModelObj.userId = userId;
 
     if (this.currentLimitId === null || this.currentLimitId === 0) {
-      this.limitModelObj.id = ++this.lastUsedId;
-      this.assignLimitService.postLimits(this.limitModelObj)
-        .subscribe(res => {
-          console.log(res);
-          this.toastr.success("Limit Added Successfully");
-          this.getLimitDetails();
-          this.resetForm();
-        },
-        err => {
-          // alert(err.message);
-          this.toastr.error("Something went wrong");
-        });
+        this.limitModelObj.id = ++this.lastUsedId;
+        this.assignLimitService.postLimits(this.limitModelObj)
+            .subscribe(res => {
+                console.log(res);
+                this.toastr.success("Limit Added Successfully");
+                this.getLimitDetails();
+                this.resetForm();
+            },
+            err => {
+                this.toastr.error("Something went wrong");
+            });
     } else {
-      this.updateLimit();
+        this.updateLimit();
     }
-  }
+}
+
 
   updateLimit() {
     debugger;
@@ -225,13 +225,30 @@ export class AssignLimitComponent implements OnInit {
   }  
 
   deleteLimit(id: number) {
-    debugger;
-    this.assignLimitService.deleteLimit(id)
-      .subscribe(res => {
-        this.toastr.success("Limit Deleted Successfully");
-        this.LimitDetails = this.LimitDetails.filter((limit: any) => limit.id !== id);
-      });
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.assignLimitService.deleteLimit(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("Limit Deleted Successfully");
+                        this.LimitDetails = this.LimitDetails.filter((limit: any) => limit.id !== id);
+                    },
+                    (error: any) => {
+                        this.toastr.error("Cannot delete this limit. An error occurred.");
+                    }
+                );
+        }
+    });
+}
+
 
   editing(id: number) {
     this.editLimit(id);

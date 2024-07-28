@@ -4,6 +4,7 @@ import { subSchemeModel } from './sub-scheme.model';
 import { SchemeService } from '../scheme/scheme.service';
 import { SubSchemeService } from './sub-scheme.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sub-scheme',
@@ -11,6 +12,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./sub-scheme.component.scss']
 })
 export class SubSchemeComponent implements OnInit {
+  onAlphabetInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+  }
   SchemeDetails: any[] = [];
   subSchemeDetails: any[] = [];
   lastUsedId: number = 0;
@@ -55,47 +60,45 @@ export class SubSchemeComponent implements OnInit {
 
   postSubSchemeDetails() {
     debugger;
-    const subScheme = this.formValue.value.subScheme.trim();
+    const subScheme = this.formValue.value.subScheme?.trim();
     const schemeId = this.formValue.value.schemeId;
 
-  //   const duplicates = this.StateDetails?.some(s => {
-  //     console.log('Checking state:', s.stateName, s.countryId);  // Log each state being checked
-  //     console.log('Comparison result:', 
-  //         s.stateName?.toLowerCase() === stateName.toLowerCase(), 
-  //         s.countryId == countryId
-  //     );
-  //     return s.stateName?.toLowerCase() === stateName.toLowerCase() && s.countryId == countryId;
-  // });
+    // Check if any input is null or empty
+    if (!subScheme || !schemeId) {
+        this.toastr.error("Please enter all the details");
+        return;
+    }
 
-  //console.log('Duplicate found:', duplicates); // Log the result of the duplicate check
-
-
-    const duplicate = this.subSchemeDetails?.some(s => s.subScheme?.toLowerCase() == subScheme.toLowerCase() && s.schemeId == schemeId);
+    const duplicate = this.subSchemeDetails?.some(s => 
+        s.subScheme?.toLowerCase() === subScheme.toLowerCase() && 
+        s.schemeId == schemeId
+    );
 
     if (duplicate) {
-      this.toastr.error("Sub-Scheme already exists in the selected Scheme");
-      return;
+        this.toastr.error("Sub-Scheme already exists in the selected Scheme");
+        return;
     }
 
     this.subSchemeModelObj.subScheme = subScheme;
     this.subSchemeModelObj.schemeId = schemeId;
 
     if (this.currentSubSchemeId === null || this.currentSubSchemeId === 0) {
-      this.subSchemeModelObj.id = ++this.lastUsedId;
-      this.subSchemeService.postSubScheme(this.subSchemeModelObj)
-        .subscribe(res => {
-          console.log(res);
-          this.toastr.success("Sub-Scheme Added Successfully");
-          this.getSubSchemeDetails();
-          this.resetForm();
-        },
-        err => {
-          this.toastr.error("Something went wrong");
-        });
+        this.subSchemeModelObj.id = ++this.lastUsedId;
+        this.subSchemeService.postSubScheme(this.subSchemeModelObj)
+            .subscribe(res => {
+                console.log(res);
+                this.toastr.success("Sub-Scheme Added Successfully");
+                this.getSubSchemeDetails();
+                this.resetForm();
+            },
+            err => {
+                this.toastr.error("Something went wrong");
+            });
     } else {
-      this.updateSubScheme();
+        this.updateSubScheme();
     }
-  }
+}
+
 
   updateSubScheme() {
     debugger;
@@ -186,12 +189,34 @@ export class SubSchemeComponent implements OnInit {
   }  
 
   deleteSubScheme(id: number) {
-    this.subSchemeService.deleteSubScheme(id)
-      .subscribe(res => {
-        this.toastr.success("Sub-Scheme Deleted Successfully");
-        this.subSchemeDetails = this.subSchemeDetails.filter((state: any) => state.id !== id);
-      });
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.subSchemeService.deleteSubScheme(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("Sub-Scheme Deleted Successfully");
+                        this.subSchemeDetails = this.subSchemeDetails.filter((subScheme: any) => subScheme.id !== id);
+                    },
+                    (error: any) => {
+                        if (error.status === 400 && error.error && error.error.error === 'Cannot delete sub-scheme. It is associated with other details.') {
+                            this.toastr.error("Cannot delete sub-scheme. It is associated with other details.");
+                        } else {
+                            this.toastr.error("Cannot delete this sub-scheme. It is associated with other details.");
+                        }
+                    }
+                );
+        }
+    });
+}
+
 
   editing(id: number) {
     this.editSubScheme(id);

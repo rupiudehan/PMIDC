@@ -18,13 +18,13 @@
             </div>
             <div class="col-md-5 mb-3">
               <label class="form-label" for="subScheme"><h5>Sub-Scheme Name</h5></label>
-              <input type="text" class="form-control" id="subScheme" formControlName="subScheme" placeholder="Enter Sub-Scheme Name" required maxlength="150">
+              <input type="text" class="form-control" id="subScheme" formControlName="subScheme" (input)="onAlphabetInputChange($event)" placeholder="Enter Sub-Scheme Name" required maxlength="150">
             </div>
           </div>
     
           <div class="row justify-content-center">
-            <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
-            <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px" (click)="cancel()">Reset</button>
+            <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%">Add</button>
+            <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px" (click)="cancel()">Reset</button>
        </div>
       </form>
        <div class="card-body p-5">

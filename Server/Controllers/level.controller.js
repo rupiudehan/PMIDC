@@ -61,16 +61,21 @@ const levelController = {
     deleteLevel: async (req, res) => {
         const { id } = req.params;
         try {
-            pool.query(`DELETE from level where id= ${id}`, (error, results) => {
-                if (error) {
-                  throw error
-                }
-                res.status(200).json({ message: 'Level deleted successfully' });
-              })
-        } catch (err) {
-            console.error('Error deleting level:', err);
-            res.status(500).json({ error: 'Failed to delete level' });
-        }
+          // Check for references in the state table first
+          const results1 = await pool.query(`SELECT COUNT(*) AS count FROM users WHERE "levelId" = $1`, [id]);
+          const count = results1.rows[0].count;
+  
+          if (count > 0) {
+              return res.status(400).json({ error: 'Cannot delete level. It is associated with other tables as a foreign key.' });
+          } else {
+              // Proceed to delete the country
+              await pool.query(`DELETE FROM level WHERE id = $1`, [id]);
+              res.status(200).json({ message: 'level deleted successfully' });
+          }
+      } catch (err) {
+          console.error('Error deleting country:', err);
+          res.status(500).json({ error: 'Failed to delete level' });
+      }
     },
 
     getLevelbyid: async (req, res) => {

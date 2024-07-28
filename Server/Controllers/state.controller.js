@@ -31,7 +31,7 @@ const pool = new Pool({
     },
     getAllStates: async (req, res) => {
         try {
-            pool.query('SELECT * FROM state st INNER JOIN country ct ON st."countryId" = ct.id;', (error, results) => {
+            pool.query('SELECT st.id, st."stateName", st."countryId", ct."countryName" FROM state st INNER JOIN country ct ON st."countryId" = ct.id;', (error, results) => {
                 if (error) {
                   throw error
                 }

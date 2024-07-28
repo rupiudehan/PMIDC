@@ -34,7 +34,7 @@ const pool = new Pool({
     },
     getAllUsers: async (req, res) => {
         try {
-            pool.query('SELECT * FROM users u INNER JOIN role r ON u."roleId" = r.id inner join level l on u."levelId" = l.id', (error, results) => {
+            pool.query('SELECT u.id, u."roleId", u."levelId", u."agencyName", u."email", u."password", r."roleName",l."levelName"  FROM users u INNER JOIN role r ON u."roleId" = r.id inner join level l on u."levelId" = l.id', (error, results) => {
                 if (error) {
                   throw error
                 }

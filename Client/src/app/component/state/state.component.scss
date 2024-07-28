@@ -1,0 +1,38 @@
+.btn-responsive {
+    width: 90%;
+    max-width: 200px;
+    margin: 5px;
+}
+
+@media (max-width: 536px)   {
+    .btn-secondary {
+        font-size: small;
+    }
+    .btn-primary {
+        font-size: small;
+    }
+
+  }
+  @media (max-width: 375px)   {
+    .btn-secondary {
+        font-size: xx-small;
+    }
+    .btn-primary {
+        font-size: xx-small;
+    }
+
+  }
+
+  .text-danger {
+    font-size: 0.875em; /* Adjust font size */
+    margin-top: 0.25em; /* Adjust margin */
+  }
+  
+  .form-select, .form-control {
+    margin-bottom: 0; /* Reset default margin */
+  }
+  
+  .col-md-5.mb-3 {
+    margin-bottom: 1.5em; /* Adjust spacing between form controls */
+  }
+  

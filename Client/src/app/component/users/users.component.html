@@ -28,11 +28,30 @@
             <div class="row justify-content-center">
               <div class="col-md-5 mb-3">
                 <label class="form-label" for="agencyName"><h5>Agency Name</h5></label>
-                <input type="text" class="form-control" id="agencyName" formControlName="agencyName" placeholder="Enter Agency Name" required maxlength="150">
+                <input type="text" class="form-control" id="agencyName" formControlName="agencyName" (input)="onAlphabetInputChange($event)" placeholder="Enter Agency Name" required maxlength="150">
+                <!-- <div *ngIf="formValue.controls['agencyName'].invalid && (formValue.controls['agencyName'].dirty || formValue.controls['agencyName'].touched)" class="text-danger">
+                  <div *ngIf="formValue.controls['agencyName'].errors?.['required']">
+                    Agency Name is required.
+                  </div>
+                  <div *ngIf="formValue.controls['agencyName'].errors?.['noSpecialCharactersAndNumbers']">
+                    Only letters are allowed.
+                  </div>
+                  <div *ngIf="formValue.controls['agencyName'].errors?.['maxlength']">
+                    Maximum length is 150 characters.
+                  </div>
+                </div> -->
               </div>
               <div class="col-md-5 mb-3">
                 <label class="form-label" for="email"><h5>Email</h5></label>
                 <input type="text" class="form-control" id="email" formControlName="email" placeholder="Enter Email" required maxlength="150">
+                <!-- <div *ngIf="formValue.controls['CountryName'].invalid && (formValue.controls['CountryName'].dirty || formValue.controls['CountryName'].touched)" class="text-danger">
+                  <div *ngIf="formValue.controls['CountryName'].errors?.['required']">
+                    Country Name is required.
+                  </div>
+                  <div *ngIf="formValue.controls['CountryName'].errors?.['maxlength']">
+                    Maximum length is 150 characters.
+                  </div>
+                </div> -->
               </div>
             </div>
             <div class="row justify-content-center">
@@ -45,8 +64,8 @@
             
   
             <div class="row justify-content-center">
-              <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
-              <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px" (click)="cancel()" >Reset</button>
+              <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%">Add</button>
+              <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px" (click)="cancel()" >Reset</button>
          </div>
         </form>
          <div class="card-body p-5">

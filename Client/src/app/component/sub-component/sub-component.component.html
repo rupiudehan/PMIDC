@@ -28,18 +28,18 @@
           <div class="row justify-content-center">
             <div class="col-md-5 mb-3">
               <label class="form-label" for="subComponent"><h5>Sub-Component</h5></label>
-              <input type="text" class="form-control" id="subComponent" formControlName="subComponent" placeholder="Enter Sub-Component Name" required maxlength="150">
+              <input type="text" class="form-control" id="subComponent" formControlName="subComponent" (input)="onAlphabetInputChange($event)" placeholder="Enter Sub-Component Name" required maxlength="150">
             </div>
             <div class="col-md-5 mb-3">
               <label class="form-label" for="componentCode"><h5>Component Code</h5></label>
-              <input type="text" class="form-control" id="componentCode" formControlName="componentCode" placeholder="Enter Postal Code" required>
+              <input type="text" class="form-control" id="componentCode" formControlName="componentCode" (input)="onAlphabetInputChange($event)" placeholder="Enter Postal Code" required>
             </div>
           </div>
           
 
           <div class="row justify-content-center">
-            <button type="submit" class="btn btn-primary" style="width: 15%">Add</button>
-            <button type="button" class="btn btn-secondary" style="width: 15%;margin-left: 20px" (click)="cancel()">Reset</button>
+            <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%">Add</button>
+            <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px" (click)="cancel()">Reset</button>
        </div>
       </form>
        <div class="card-body p-5">

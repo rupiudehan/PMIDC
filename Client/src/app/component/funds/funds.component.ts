@@ -3,6 +3,7 @@ import { FormGroup , FormBuilder, Validators } from '@angular/forms';
 import { FundsModel } from './funds.model';
 import { FundsService } from './funds.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-funds',
@@ -113,13 +114,30 @@ onSubmit(obj :any){
   }
 
   deleteFunds(id: number) {
-    this.api.deleteFunds(id)
-      .subscribe((res: any) => { 
-        this.toastr.success("Funds Deleted Successfully");
-        this.FundDetails = this.FundDetails.filter((funds: any) => funds.id !== id);
-        
-      });
-  }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.api.deleteFunds(id)
+                .subscribe(
+                    (res: any) => {
+                        this.toastr.success("Funds Deleted Successfully");
+                        this.FundDetails = this.FundDetails.filter((funds: any) => funds.id !== id);
+                    },
+                    (error: any) => {
+                        this.toastr.error("Cannot delete these funds. An error occurred.");
+                    }
+                );
+        }
+    });
+}
+
 
   updateFunds(obj:any) {
     debugger;
