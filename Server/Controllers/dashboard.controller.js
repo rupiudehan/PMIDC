@@ -14,7 +14,7 @@ const userCountController = {
     getAllUser: async (req, res) => {
         try {
             pool.query(`select *from(select count(*)title,1 as no from users union select sum("funds")title,2 as no from funds union 
-select (select sum("funds") from funds) - (select sum("limit") from assign_limits) as title,3 as no)t
+select (select sum("funds") from funds) - (select sum("limit") from assign_limits) as title,3 as no union  select sum ("limit")title,4 as no from assign_limits)t
 order by t.no`, (error, results) => {
                 if (error) {
                   throw error

@@ -29,7 +29,7 @@ export const topcards: topcard[] = [
         bgcolor: 'info',
         icon: 'bi bi-bag',
         title: '210',
-        subtitle: 'Weekly Sales'
+        subtitle: 'Funds Used'
     },
 
 ] 

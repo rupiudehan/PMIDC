@@ -32,7 +32,7 @@
               <tr>
                 <th scope="col">Sr No.</th>
                 <th scope="col">Amount</th>
-                <th scope="col">Date</th>
+                <!-- <th scope="col">Date</th> -->
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -40,7 +40,7 @@
               <tr *ngFor="let fund of FundDetails; let i = index">
                 <th scope="row">{{ i+1 }}</th> 
                 <td>{{ fund.funds }}</td> 
-                <td></td>
+                <!-- <td></td> -->
                 <td>
                   <i class="fa fa-pencil" (click)="editFunds(fund.id)" aria-hidden="true" style="cursor: pointer;"></i>
                   <i class="fa fa-trash" (click)="deleteFunds(fund.id)" aria-hidden="true"  style="margin-left: 16px; cursor: pointer;" ></i>

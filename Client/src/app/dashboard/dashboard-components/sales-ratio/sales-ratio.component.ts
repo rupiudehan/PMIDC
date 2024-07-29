@@ -41,11 +41,11 @@ export class SalesRatioComponent implements OnInit {
     this.salesChartOptions = {
       series: [
         {
-          name: "Iphone 13",
+          name: "Funds",
           data: [0, 31, 40, 28, 51, 42, 109, 100],
         },
         {
-          name: "Oneplue 9",
+          name: "Scheme",
           data: [0, 11, 32, 45, 32, 34, 52, 41],
         },
       ],

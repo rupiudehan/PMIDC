@@ -14,7 +14,7 @@ const fundsController = {
         const { Funds } = req.body;
         console.log(Funds);
         try {
-            pool.query(`INSERT INTO funds ("funds") Values (${Funds})`, (error, results) => {
+            pool.query(`INSERT INTO funds ("funds", "createdDate") Values (${Funds})`, (error, results) => {
                 if (error) {
                     console.error('Error executing query', error.stack);
                     throw error;
