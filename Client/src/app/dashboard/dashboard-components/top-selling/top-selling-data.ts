@@ -2,7 +2,7 @@ export interface Product {
     image: string,
     uname: string,
     gmail: string,
-    productName: string,
+    consumedFunds: number,
     status: string,
     budget: string
 }
@@ -13,33 +13,33 @@ export const TopSelling: Product[] = [
         image: 'assets/images/users/user1.jpg',
         uname: 'Hanna Gover',
         gmail: 'hgover@gmail.com',
-        productName: 'Flexy React',
+        consumedFunds: 100000,
         status: 'danger',
-        budget: '95K'
+        budget: '200000'
     },
     {
         image: 'assets/images/users/user2.jpg',
         uname: 'Hanna Gover',
         gmail: 'hgover@gmail.com',
-        productName: 'Landing pro React',
+        consumedFunds: 100000,
         status: 'info',
-        budget: '95K'
+        budget: '300000'
     },
     {
         image: 'assets/images/users/user3.jpg',
         uname: 'Hanna Gover',
         gmail: 'hgover@gmail.com',
-        productName: 'Elite React	',
+        consumedFunds: 250000,
         status: 'warning',
-        budget: '95K'
+        budget: '300000'
     },
     {
         image: 'assets/images/users/user4.jpg',
         uname: 'Hanna Gover',
         gmail: 'hgover@gmail.com',
-        productName: 'Ample React',
+        consumedFunds: 600000,
         status: 'success',
-        budget: '95K'
+        budget: '700000'
     },
 
 ]
