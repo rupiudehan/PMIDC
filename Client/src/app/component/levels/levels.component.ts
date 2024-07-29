@@ -155,36 +155,42 @@ onSubmit(obj :any){
 }
 
 
-  updateLevel(obj:any) {
-    debugger;
-    const levelName = this.formValue.value.LevelName.trim(); // Trim spaces
-  
-    // Check for duplicate country names, excluding the current country being edited
-    const duplicate = this.LevelDetails?.some(l => l.levelName?.toLowerCase() === levelName.toLowerCase());
+updateLevel(obj: any) {
+  debugger;
+  const levelName = this.formValue.value.LevelName?.trim();
 
-  
-    if (duplicate) {
+  if (!levelName) {
+      this.toastr.error("Please enter a level name");
+      return;
+  }
+
+  // Check for duplicate level names, excluding the current level being edited
+  const duplicate = this.LevelDetails?.some(l => l.levelName?.toLowerCase() === levelName.toLowerCase() && l.id !== this.currentLevelId);
+
+  if (duplicate) {
       this.toastr.error("Level already exists");
       return;
-    }
-  
-    if (this.currentLevelId !== null) {
+  }
+
+  if (this.currentLevelId !== null) {
       this.levelModelObj.LevelName = levelName; // Use trimmed value
       this.levelModelObj.id = this.currentLevelId;
-  
-      this.api.updateLevel(obj)
-        .subscribe((res: any) => {
-          // console.log(res);
-          this.formValue.value.id=0;
-        
-        },
-        (error: any) => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
+
+      this.api.updateLevel(this.levelModelObj)
+          .subscribe((res: any) => {
+              console.log(res);
+              this.toastr.success("Level Updated Successfully");
+              this.formValue.reset();
+              this.getLevelDetails();
+          },
+          (error: any) => {
+              this.toastr.error("Something went wrong");
+          });
+  } else {
       this.toastr.error("Invalid Level ID");
-    }
   }
+}
+
 
   editLevel(id: any){
     // debugger;

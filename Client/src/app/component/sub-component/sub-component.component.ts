@@ -120,20 +120,34 @@ export class SubComponentComponent implements OnInit {
 }
 
 
-  updateSubComponent() {
-    debugger;
-    const subComponent = this.formValue.value.subComponent.trim(); 
-    const schemeId = this.formValue.value.schemeId; 
-    const componentCode = this.formValue.value.componentCode.trim(); 
-    const subSchemeId = this.formValue.value.subSchemeId; 
-    const duplicate = this.SubComponentDetails?.some(s =>  s.subComponent?.toLowerCase() == subComponent.toLowerCase() && s.componentCode?.toLowerCase() == componentCode.toLowerCase() && s.schemeId == schemeId && s.subSchemeId == subSchemeId);
+updateSubComponent() {
+  debugger;
+  const subComponent = this.formValue.value.subComponent?.trim(); 
+  const schemeId = this.formValue.value.schemeId; 
+  const componentCode = this.formValue.value.componentCode?.trim(); 
+  const subSchemeId = this.formValue.value.subSchemeId; 
 
-    if (duplicate) {
+  // Validate input values
+  if (!subComponent || !schemeId || !componentCode || !subSchemeId) {
+      this.toastr.error("All fields must be filled out");
+      return;
+  }
+
+  // Check for duplicate sub-component in the selected scheme and sub-scheme
+  const duplicate = this.SubComponentDetails?.some(s => 
+      s.subComponent?.toLowerCase() === subComponent.toLowerCase() &&
+      s.componentCode?.toLowerCase() === componentCode.toLowerCase() &&
+      s.schemeId === schemeId &&
+      s.subSchemeId === subSchemeId &&
+      s.id !== this.currentSubComponentId
+  );
+
+  if (duplicate) {
       this.toastr.error("Sub-Component already exists in the selected Scheme");
       return;
-    }
+  }
 
-    if (this.currentSubComponentId !== null) {
+  if (this.currentSubComponentId !== null) {
       this.componentModelObj.SubComponent = subComponent; 
       this.componentModelObj.schemeId = schemeId; 
       this.componentModelObj.subSchemeId = subSchemeId; 
@@ -141,19 +155,22 @@ export class SubComponentComponent implements OnInit {
       this.componentModelObj.id = this.currentSubComponentId;
 
       this.SubComponentService.updateSubComponent(this.componentModelObj)
-        .subscribe((res:any) => {
-          console.log(res);
-          this.toastr.success("Sub-Component Updated Successfully");
-          this.getSubComponentDetails();
-          this.resetForm();
-        },
-        (error:any) => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
+          .subscribe(
+              (res: any) => {
+                  console.log(res);
+                  this.toastr.success("Sub-Component Updated Successfully");
+                  this.getSubComponentDetails();
+                  this.resetForm();
+              },
+              (error: any) => {
+                  this.toastr.error("Something went wrong");
+              }
+          );
+  } else {
       this.toastr.error("Invalid Sub-Component ID");
-    }
   }
+}
+
 
   editSubComponent(id: number | null) {
     debugger;

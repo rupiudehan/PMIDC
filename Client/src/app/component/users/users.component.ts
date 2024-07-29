@@ -121,21 +121,35 @@ export class UsersComponent implements OnInit {
     }
 }
 
-  updateUser() {
-    debugger;
-    const agencyName = this.formValue.value.agencyName.trim(); 
-    const email = this.formValue.value.email.trim(); 
-    const password = this.formValue.value.password.trim(); 
-    const roleId = this.formValue.value.roleId;
-    const levelId = this.formValue.value.levelId;  
-    const duplicate = this.UserDetails?.some(u => u.agencyName?.toLowerCase() === agencyName.toLowerCase() && u.roleId === roleId && u.levelId === levelId && u.email.toLowerCase() === email.toLowerCase() && u.id !== this.currentUserId);
+updateUser() {
+  debugger;
+  const agencyName = this.formValue.value.agencyName?.trim(); 
+  const email = this.formValue.value.email?.trim(); 
+  const password = this.formValue.value.password?.trim(); 
+  const roleId = this.formValue.value.roleId;
+  const levelId = this.formValue.value.levelId;
 
-    if (duplicate) {
-      this.toastr.error("State already exists in the selected country");
+  // Check if any mandatory field is empty
+  if (!agencyName || !email || !password || !roleId || !levelId) {
+      this.toastr.error("Please enter all mandatory fields");
       return;
-    }
+  }
 
-    if (this.currentUserId !== null) {
+  // Check for duplicate user information, excluding the current user being edited
+  const duplicate = this.UserDetails?.some(u => 
+      u.agencyName?.toLowerCase() === agencyName.toLowerCase() && 
+      u.roleId === roleId && 
+      u.levelId === levelId && 
+      u.email.toLowerCase() === email.toLowerCase() && 
+      u.id !== this.currentUserId
+  );
+
+  if (duplicate) {
+      this.toastr.error("User with the same details already exists");
+      return;
+  }
+
+  if (this.currentUserId !== null) {
       this.userModelObj.agencyName = agencyName; 
       this.userModelObj.email = email; 
       this.userModelObj.password = password; 
@@ -144,19 +158,20 @@ export class UsersComponent implements OnInit {
       this.userModelObj.id = this.currentUserId;
 
       this.userService.updateUser(this.userModelObj)
-        .subscribe((res:any) => {
-          console.log(res);
-          this.toastr.success("User Updated Successfully");
-          this.getUserDetails();
-          this.resetForm();
-        },
-        (error:any) => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
+          .subscribe((res: any) => {
+              console.log(res);
+              this.toastr.success("User Updated Successfully");
+              this.getUserDetails();
+              this.resetForm();
+          },
+          (error: any) => {
+              this.toastr.error("Something went wrong");
+          });
+  } else {
       this.toastr.error("Invalid User ID");
-    }
   }
+}
+
 
   editUser(id: number | null) {
     debugger;

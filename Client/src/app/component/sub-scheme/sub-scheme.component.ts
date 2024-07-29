@@ -100,36 +100,47 @@ export class SubSchemeComponent implements OnInit {
 }
 
 
-  updateSubScheme() {
-    debugger;
-    const subScheme = this.formValue.value.subScheme.trim(); 
-    const schemeId = this.formValue.value.schemeId; 
-    const duplicate = this.subSchemeDetails?.some(s => s.subScheme?.toLowerCase() === subScheme.toLowerCase() && s.schemeId === schemeId && s.id !== this.currentSubSchemeId);
+updateSubScheme() {
+  debugger;
+  const subScheme = this.formValue.value.subScheme?.trim(); 
+  const schemeId = this.formValue.value.schemeId; 
 
-    if (duplicate) {
+  // Validate subScheme and schemeId
+  if (!subScheme || !schemeId) {
+      this.toastr.error("Sub-Scheme and Scheme ID cannot be null or empty");
+      return;
+  }
+
+  // Check for duplicate sub-scheme names within the same scheme, excluding the current sub-scheme being edited
+  const duplicate = this.subSchemeDetails?.some(s => s.subScheme?.toLowerCase() === subScheme.toLowerCase() && s.schemeId === schemeId && s.id !== this.currentSubSchemeId);
+
+  if (duplicate) {
       this.toastr.error("Sub-Scheme already exists in the selected Scheme");
       return;
-    }
+  }
 
-    if (this.currentSubSchemeId !== null) {
+  if (this.currentSubSchemeId !== null) {
       this.subSchemeModelObj.subScheme = subScheme; 
       this.subSchemeModelObj.schemeId = schemeId; 
       this.subSchemeModelObj.id = this.currentSubSchemeId;
 
       this.subSchemeService.updateSubScheme(this.subSchemeModelObj)
-        .subscribe((res:any) => {
-          console.log(res);
-          this.toastr.success("Sub-Scheme Updated Successfully");
-          this.getSubSchemeDetails();
-          this.resetForm();
-        },
-        (error:any) => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
+          .subscribe(
+              (res: any) => {
+                  console.log(res);
+                  this.toastr.success("Sub-Scheme Updated Successfully");
+                  this.getSubSchemeDetails();
+                  this.resetForm();
+              },
+              (error: any) => {
+                  this.toastr.error("Something went wrong");
+              }
+          );
+  } else {
       this.toastr.error("Invalid Sub-Scheme ID");
-    }
   }
+}
+
 
   editSubScheme(id: number | null) {
     debugger;

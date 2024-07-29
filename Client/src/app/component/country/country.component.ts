@@ -154,35 +154,42 @@ onAlphabetInputChange(event: Event): void {
 }
 
 
-  updateCountry(obj:any) {
-    debugger;
-    const countryName = this.formValue.value.CountryName.trim(); // Trim spaces
-  
-    // Check for duplicate country names, excluding the current country being edited
-    const duplicate = this.CountryDetails?.some(c => c.countryName?.toLowerCase() === countryName.toLowerCase());
+updateCountry(obj: any) {
+  debugger;
+  const countryName = this.formValue.value.CountryName?.trim();
 
-    if (duplicate) {
+  if (!countryName) {
+      this.toastr.error("Please enter a country name");
+      return;
+  }
+
+  // Check for duplicate country names, excluding the current country being edited
+  const duplicate = this.CountryDetails?.some(c => c.countryName?.toLowerCase() === countryName.toLowerCase() && c.id !== this.currentCountryId);
+
+  if (duplicate) {
       this.toastr.error("Country already exists");
       return;
-    }
-  
-    if (this.currentCountryId !== null) {
+  }
+
+  if (this.currentCountryId !== null) {
       this.countryModelObj.CountryName = countryName; // Use trimmed value
       this.countryModelObj.id = this.currentCountryId;
-  
-      this.api.updateCountry(obj)
-        .subscribe(res => {
-          //console.log(res);
-          this.formValue.value.id=0;
-        
-        },
-        err => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
+
+      this.api.updateCountry(this.countryModelObj)
+          .subscribe(res => {
+              console.log(res);
+              this.toastr.success("Country Updated Successfully");
+              this.formValue.reset();
+              this.getCountryDetails();
+          },
+          err => {
+              this.toastr.error("Something went wrong");
+          });
+  } else {
       this.toastr.error("Invalid country ID");
-    }
   }
+}
+
 
   editCountry(id: any){
     // debugger;

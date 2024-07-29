@@ -58,11 +58,11 @@ export class StateComponent implements OnInit {
 
   postStateDetails() {
     debugger;
-    const stateName = this.formValue.value.stateName.trim();
+    const stateName = this.formValue.value.stateName?.trim();
     const countryId = this.formValue.value.countryId;
 
-    if (!stateName) {
-        this.toastr.error("Please enter state name");
+    if (!stateName || !countryId) {
+        this.toastr.error("Please enter all mandatory fields");
         return;
     }
 
@@ -93,37 +93,52 @@ export class StateComponent implements OnInit {
     }
 }
 
+updateState() {
+  debugger;
+  const stateName = this.formValue.value.stateName?.trim();
+  const countryId = this.formValue.value.countryId;
 
-  updateState() {
-    debugger;
-    const stateName = this.formValue.value.stateName.trim(); 
-    const countryId = this.formValue.value.countryId; 
-    const duplicate = this.StateDetails?.some(s => s.stateName?.toLowerCase() === stateName.toLowerCase() && s.countryId === countryId && s.id !== this.currentStateId);
+  // Check if any mandatory field is empty
+  if (!stateName || !countryId) {
+      this.toastr.error("Please enter all mandatory fields");
+      return;
+  }
 
-    if (duplicate) {
+  // Check for duplicate state names in the same country, excluding the current state being edited
+  const duplicate = this.StateDetails?.some(s => 
+      s.stateName?.toLowerCase() === stateName.toLowerCase() && 
+      s.countryId === countryId && 
+      s.id !== this.currentStateId
+  );
+
+  if (duplicate) {
       this.toastr.error("State already exists in the selected country");
       return;
-    }
+  }
 
-    if (this.currentStateId !== null) {
-      this.stateModelObj.stateName = stateName; 
-      this.stateModelObj.countryId = countryId; 
+  if (this.currentStateId !== null) {
+      this.stateModelObj.stateName = stateName;
+      this.stateModelObj.countryId = countryId;
       this.stateModelObj.id = this.currentStateId;
 
       this.stateService.updateState(this.stateModelObj)
-        .subscribe((res:any) => {
-          console.log(res);
-          this.toastr.success("State Updated Successfully");
-          this.getStateDetails();
-          this.resetForm();
-        },
-        (error:any) => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
+          .subscribe(
+              (res: any) => {
+                  console.log(res);
+                  this.toastr.success("State Updated Successfully");
+                  this.getStateDetails();
+                  this.resetForm();
+              },
+              (error: any) => {
+                  this.toastr.error("Something went wrong");
+              }
+          );
+  } else {
       this.toastr.error("Invalid state ID");
-    }
   }
+}
+
+
 
   editState(id: number | null) {
     debugger;

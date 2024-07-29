@@ -128,21 +128,35 @@ export class AssignLimitComponent implements OnInit {
 }
 
 
-  updateLimit() {
-    debugger;
-    const limit = this.formValue.value.limit; 
-    const schemeId = this.formValue.value.schemeId; 
-    const levelId = this.formValue.value.levelId; 
-    const userId = this.formValue.value.userId; 
-    const duplicate = this.LimitDetails?.some(l => l.limit == limit && l.levelId == levelId && l.schemeId == schemeId && l.userId == userId);
+updateLimit() {
+  debugger;
+  const limit = this.formValue.value.limit; 
+  const schemeId = this.formValue.value.schemeId; 
+  const levelId = this.formValue.value.levelId; 
+  const userId = this.formValue.value.userId; 
 
-
-    if (duplicate) {
-      this.toastr.error("Sub-Component already exists in the selected Scheme");   //check
+  // Validate input values
+  if (limit === null || limit === undefined || schemeId === null || schemeId === undefined || 
+      levelId === null || levelId === undefined || userId === null || userId === undefined) {
+      this.toastr.error("All fields must be filled out");
       return;
-    }
+  }
 
-    if (this.currentLimitId !== null) {
+  // Check for duplicate limit
+  const duplicate = this.LimitDetails?.some(l => 
+      l.limit === limit &&
+      l.levelId === levelId &&
+      l.schemeId === schemeId &&
+      l.userId === userId &&
+      l.id !== this.currentLimitId // Exclude the current limit being edited
+  );
+
+  if (duplicate) {
+      this.toastr.error("Limit already exists for the selected Scheme, Level, and User");
+      return;
+  }
+
+  if (this.currentLimitId !== null) {
       this.limitModelObj.limit = limit; 
       this.limitModelObj.schemeId = schemeId; 
       this.limitModelObj.levelId = levelId; 
@@ -150,19 +164,22 @@ export class AssignLimitComponent implements OnInit {
       this.limitModelObj.id = this.currentLimitId;
 
       this.assignLimitService.updateLimit(this.limitModelObj)
-        .subscribe((res:any) => {
-          console.log(res);
-          this.toastr.success("Limit Updated Successfully");
-          this.getLimitDetails();
-          this.resetForm();
-        },
-        (error:any) => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
+          .subscribe(
+              (res: any) => {
+                  console.log(res);
+                  this.toastr.success("Limit Updated Successfully");
+                  this.getLimitDetails();
+                  this.resetForm();
+              },
+              (error: any) => {
+                  this.toastr.error("Something went wrong");
+              }
+          );
+  } else {
       this.toastr.error("Invalid Limit ID");
-    }
   }
+}
+
 
   editLimit(id: number | null) {
     debugger;

@@ -150,35 +150,42 @@ onSubmit(obj :any){
 }
 
 
-  updateRole(obj:any) {
-    debugger;
-    const roleName = this.formVal.value.RoleName.trim();
-  
-    
-    const duplicate = this.RoleDetails?.some(r => r.roleName?.toLowerCase() === roleName.toLowerCase());
-  
-    if (duplicate) {
+updateRole(obj: any) {
+  debugger;
+  const roleName = this.formVal.value.RoleName?.trim();
+
+  if (!roleName) {
+      this.toastr.error("Please enter a role name");
+      return;
+  }
+
+  // Check for duplicate role names, excluding the current role being edited
+  const duplicate = this.RoleDetails?.some(r => r.roleName?.toLowerCase() === roleName.toLowerCase() && r.id !== this.currentRoleId);
+
+  if (duplicate) {
       this.toastr.error("Role already exists");
       return;
-    }
-  
-    if (this.currentRoleId !== null) {
-      this.RoleModelObj.RoleName = roleName; 
-      this.RoleModelObj.id = this.currentRoleId;
-  
-      this.api.updateRole(obj)
-        .subscribe((res: any) => {
-          //console.log(res);
-          this.formVal.value.id=0;
-        
-        },
-        err => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
-      this.toastr.error("Invalid Role ID");
-    }
   }
+
+  if (this.currentRoleId !== null) {
+      this.RoleModelObj.RoleName = roleName; // Use trimmed value
+      this.RoleModelObj.id = this.currentRoleId;
+
+      this.api.updateRole(this.RoleModelObj)
+          .subscribe((res: any) => {
+              console.log(res);
+              this.toastr.success("Role Updated Successfully");
+              this.formVal.reset();
+              this.getRoleDetails();
+          },
+          (err: any) => {
+              this.toastr.error("Something went wrong");
+          });
+  } else {
+      this.toastr.error("Invalid Role ID");
+  }
+}
+
 
   editRole(id: any){
     // debugger;

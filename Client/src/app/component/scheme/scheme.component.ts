@@ -156,35 +156,43 @@ onSubmit(obj :any){
 }
 
 
-  updateScheme(obj:any) {
-    debugger;
-    const schemeName = this.formValue.value.SchemeName.trim(); // Trim spaces
-  
-    // Check for duplicate country names, excluding the current country being edited
-    const duplicate = this.SchemeDetails?.some(c => c.schemeName?.toLowerCase() === schemeName.toLowerCase());
-  
-    if (duplicate) {
+updateScheme(obj: any) {
+  debugger;
+  const schemeName = this.formValue.value.SchemeName?.trim(); // Trim spaces and check for null/undefined
+
+  if (!schemeName) {
+      this.toastr.error("Scheme Name cannot be null or empty");
+      return;
+  }
+
+  // Check for duplicate scheme names, excluding the current scheme being edited
+  const duplicate = this.SchemeDetails?.some(c => c.schemeName?.toLowerCase() === schemeName.toLowerCase());
+
+  if (duplicate) {
       this.toastr.error("Scheme already exists");
       return;
-    }
-  
-    if (this.currentSchemeId !== null) {
+  }
+
+  if (this.currentSchemeId !== null) {
       this.schemeModelObj.SchemeName = schemeName; // Use trimmed value
       this.schemeModelObj.id = this.currentSchemeId;
-  
-      this.api.updateScheme(obj)
-        .subscribe(res => {
-          //console.log(res);
-          this.formValue.value.id=0;
-        
-        },
-        err => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
+
+      this.api.updateScheme(this.schemeModelObj)
+          .subscribe(
+              res => {
+                  this.formValue.reset(); // Reset the form
+                  this.toastr.success("Scheme updated successfully");
+              },
+              err => {
+                  this.toastr.error("Something went wrong");
+              }
+          );
+  } else {
       this.toastr.error("Invalid Scheme ID");
-    }
   }
+}
+
+
 
   editScheme(id: any){
     // debugger;
