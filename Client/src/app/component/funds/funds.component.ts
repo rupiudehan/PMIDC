@@ -21,6 +21,7 @@ export class FundsComponent {
   refreshPage: any;
   router: any;
   row: any;
+  isUpdate: boolean = false;
 
   constructor (private FormBuilder: FormBuilder,
     private api :FundsService,
@@ -141,15 +142,15 @@ onSubmit(obj :any){
 
   updateFunds(obj:any) {
     debugger;
-    const funds = this.formValue.value.Funds.trim(); // Trim spaces
+    const funds = this.formValue.value.Funds; // Trim spaces
   
     // Check for duplicate country names, excluding the current country being edited
-    const duplicate = this.FundDetails?.some(f => f.Funds?.toLowerCase() === funds.toLowerCase() && f.id !== this.currentFundId);
+    // const duplicate = this.FundDetails?.some(f => f.Funds?.toLowerCase() === funds.toLowerCase() && f.id !== this.currentFundId);
   
-    if (duplicate) {
-      this.toastr.error("Fund already exists");
-      return;
-    }
+    // if (duplicate) {
+    //   this.toastr.error("Fund already exists");
+    //   return;
+    // }
   
     if (this.currentFundId !== null) {
       this.fundsModelObj.Funds = funds; // Use trimmed value
@@ -159,6 +160,7 @@ onSubmit(obj :any){
         .subscribe(res => {
           //console.log(res);
           this.formValue.value.id=0;
+          this.isUpdate=false;
         
         },
         err => {
@@ -181,7 +183,7 @@ onSubmit(obj :any){
           Funds: funds[0].funds,
           id: funds[0].id
         });
-        
+        this.isUpdate=true;
         this.currentFundId = id;
        
         // Update the stateModelObj with the correct state name

@@ -25,7 +25,7 @@ export class SubComponentComponent implements OnInit {
   formValue!: FormGroup;
   componentModelObj: componentModel = new componentModel();
   api: any;
-
+  isUpdate: boolean = false;
   detailsData: any[]=[];
 
   constructor(
@@ -161,6 +161,7 @@ updateSubComponent() {
                   this.toastr.success("Sub-Component Updated Successfully");
                   this.getSubComponentDetails();
                   this.resetForm();
+                  this.isUpdate=false;
               },
               (error: any) => {
                   this.toastr.error("Something went wrong");
@@ -187,10 +188,11 @@ updateSubComponent() {
           this.formValue.patchValue({
             subComponent: subComponent[0].subComponent,
             schemeId: subComponent[0].schemeId,
-            subschemeId: subComponent[0].subschemeId,
+            subSchemeId: subComponent[0].subSchemeId,
             componentCode: subComponent[0].componentCode,
             id: subComponent[0].id
           });
+          this.isUpdate=true;
           this.currentSubComponentId = id;
         } else {
           console.error("Sub-Component not found for ID:", id); 

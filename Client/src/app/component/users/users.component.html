@@ -64,7 +64,7 @@
             
   
             <div class="row justify-content-center">
-              <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%">Add</button>
+              <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%">{{isUpdate?'Update':'Add'}}</button>
               <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px" (click)="cancel()" >Reset</button>
          </div>
         </form>
@@ -95,7 +95,7 @@
                 <td>{{ user.email }}</td>
                 <td>
                   <i class="fa fa-pencil" (click)="editing(user.id)" aria-hidden="true" style="cursor: pointer;"></i>
-                  <i class="fa fa-toggle-on" (click)="deleteUser(user.id)" style="margin-left: 16px; cursor: pointer;"></i>
+                  <i class="fa fa-toggle-on" style="margin-left: 16px; cursor: pointer;"></i>
                 </td>
               </tr>
             </tbody>

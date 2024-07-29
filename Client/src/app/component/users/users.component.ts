@@ -24,7 +24,7 @@ export class UsersComponent implements OnInit {
   formValue!: FormGroup;
   userModelObj: userModel = new userModel();
   api: any;
-
+  isUpdate: boolean = false;
   detailsData: any[]=[];
 
   constructor(
@@ -163,6 +163,7 @@ updateUser() {
               this.toastr.success("User Updated Successfully");
               this.getUserDetails();
               this.resetForm();
+              this.isUpdate=false;
           },
           (error: any) => {
               this.toastr.error("Something went wrong");
@@ -193,6 +194,7 @@ updateUser() {
             levelId: user[0].levelId,
             id: user[0].id
           });
+          this.isUpdate=true;
           this.currentUserId = id;
         } else {
           console.error("User not found for ID:", id); 

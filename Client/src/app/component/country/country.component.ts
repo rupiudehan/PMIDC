@@ -27,6 +27,7 @@ export class CountryComponent {
   router: any;
   row: any;
   level: any;
+  isUpdate: boolean = false;
 
   constructor (private FormBuilder: FormBuilder,
     private api :CountryService,
@@ -178,9 +179,10 @@ updateCountry(obj: any) {
       this.api.updateCountry(this.countryModelObj)
           .subscribe(res => {
               console.log(res);
-              this.toastr.success("Country Updated Successfully");
+              // this.toastr.success("Country Updated Successfully");
               this.formValue.reset();
               this.getCountryDetails();
+              this.isUpdate=false;
           },
           err => {
               this.toastr.error("Something went wrong");
@@ -203,7 +205,7 @@ updateCountry(obj: any) {
           CountryName: country[0].countryName,
           id: country[0].id
         });
-        
+        this.isUpdate=true;
         this.currentCountryId = id;
        
         // Update the stateModelObj with the correct state name

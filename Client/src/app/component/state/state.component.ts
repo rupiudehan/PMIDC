@@ -20,6 +20,7 @@ export class StateComponent implements OnInit {
   formValue!: FormGroup;
   stateModelObj: stateModel = new stateModel();
   api: any;
+  isUpdate: boolean = false;
 
   detailsData: any[]=[];
 
@@ -128,6 +129,7 @@ updateState() {
                   this.toastr.success("State Updated Successfully");
                   this.getStateDetails();
                   this.resetForm();
+                  this.isUpdate=false;
               },
               (error: any) => {
                   this.toastr.error("Something went wrong");
@@ -157,6 +159,7 @@ updateState() {
             countryId: state[0].countryId,
             id: state[0].id
           });
+          this.isUpdate=true;
           this.currentStateId = id;
         } else {
           console.error("State not found for ID:", id); 

@@ -23,6 +23,7 @@ export class AssignLimitComponent implements OnInit {
   formValue!: FormGroup;
   limitModelObj: limitModel = new limitModel();
   api: any;
+  isUpdate: boolean = false;
 
   detailsData: any[]=[];
 
@@ -170,6 +171,7 @@ updateLimit() {
                   this.toastr.success("Limit Updated Successfully");
                   this.getLimitDetails();
                   this.resetForm();
+                  this.isUpdate=false;
               },
               (error: any) => {
                   this.toastr.error("Something went wrong");
@@ -201,6 +203,7 @@ updateLimit() {
             
             id: limit[0].id
           });
+          this.isUpdate=true;
           this.currentLimitId = id;
         } else {
           console.error("Limit not found for ID:", id); 

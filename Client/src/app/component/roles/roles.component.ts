@@ -23,7 +23,7 @@ export class RolesComponent {
   formVal !: FormGroup;
   RoleModelObj   : RoleModel = new RoleModel();
   refreshPage: any;
-  
+  isUpdate: boolean = false;
   router: any;
   row: any;
 
@@ -174,9 +174,10 @@ updateRole(obj: any) {
       this.api.updateRole(this.RoleModelObj)
           .subscribe((res: any) => {
               console.log(res);
-              this.toastr.success("Role Updated Successfully");
+              // this.toastr.success("Role Updated Successfully");
               this.formVal.reset();
               this.getRoleDetails();
+              this.isUpdate=false;
           },
           (err: any) => {
               this.toastr.error("Something went wrong");
@@ -199,7 +200,7 @@ updateRole(obj: any) {
           RoleName: role[0].roleName,
           id: role[0].id
         });
-        
+        this.isUpdate=true;
         this.currentRoleId = id;
        
         // Update the stateModelObj with the correct state name

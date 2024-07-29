@@ -26,7 +26,7 @@ levelModelObj   : LevelModel = new LevelModel();
 refreshPage: any;
 router: any;
 row: any;
-
+isUpdate: boolean = false;
 level: any;
 
 constructor (private FormBuilder: FormBuilder,
@@ -179,9 +179,10 @@ updateLevel(obj: any) {
       this.api.updateLevel(this.levelModelObj)
           .subscribe((res: any) => {
               console.log(res);
-              this.toastr.success("Level Updated Successfully");
+              // this.toastr.success("Level Updated Successfully");
               this.formValue.reset();
               this.getLevelDetails();
+              this.isUpdate=false;
           },
           (error: any) => {
               this.toastr.error("Something went wrong");
@@ -204,7 +205,7 @@ updateLevel(obj: any) {
           LevelName: level[0].levelName,
           id: level[0].id
         });
-        
+        this.isUpdate=true;
         this.currentLevelId = id;
        
         // Update the stateModelObj with the correct state name

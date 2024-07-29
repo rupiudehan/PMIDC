@@ -24,6 +24,7 @@ export class SubSchemeComponent implements OnInit {
   subSchemeModelObj: subSchemeModel = new subSchemeModel();
   api: any;
   detailsData: any[]=[];
+  isUpdate: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -131,6 +132,7 @@ updateSubScheme() {
                   this.toastr.success("Sub-Scheme Updated Successfully");
                   this.getSubSchemeDetails();
                   this.resetForm();
+                  this.isUpdate=false;
               },
               (error: any) => {
                   this.toastr.error("Something went wrong");
@@ -159,6 +161,7 @@ updateSubScheme() {
             schemeId: subScheme[0].schemeId,
             id: subScheme[0].id
           });
+          this.isUpdate=true;
           this.currentSubSchemeId = id;
         } else {
           console.error("Sub-Scheme not found for ID:", id); 

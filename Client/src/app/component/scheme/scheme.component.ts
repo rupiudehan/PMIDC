@@ -31,6 +31,7 @@ export class SchemeComponent {
   router: any;
   row: any;
   level: any;
+  isUpdate: boolean = false;
 
 
   constructor (private FormBuilder: FormBuilder,
@@ -181,7 +182,10 @@ updateScheme(obj: any) {
           .subscribe(
               res => {
                   this.formValue.reset(); // Reset the form
-                  this.toastr.success("Scheme updated successfully");
+                  // this.toastr.success("Scheme updated successfully");
+                  this.formValue.reset();
+                  this.getSchemeDetails();
+                  this.isUpdate=false;
               },
               err => {
                   this.toastr.error("Something went wrong");
@@ -206,7 +210,7 @@ updateScheme(obj: any) {
           SchemeName: scheme[0].schemeName,
           id: scheme[0].id
         });
-        
+        this.isUpdate=true;
         this.currentSchemeId = id;
        
         // Update the stateModelObj with the correct state name
