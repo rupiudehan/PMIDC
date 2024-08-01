@@ -34,8 +34,9 @@
        <div class="card-body p-5">
         <div class="row mb-4">
           <div class="col-md-6">
-            <input type="text" class="form-control" placeholder="Search..." #searchInput />
+            <input type="text" class="form-control" placeholder="Search..." #searchInput (input)="onSearch(searchInput.value)" />
           </div>
+          
         </div>
         <!--table-->
         <table class="table table-striped">

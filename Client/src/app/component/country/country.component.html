@@ -7,7 +7,7 @@
           <div class="row justify-content-center">
             <div class="col-md-5 mb-3">
               <label class="form-label" for="countryName"><h5>Country Name</h5></label>
-              <input type="text" class="form-control" id="countryName" formControlName="CountryName" (input)="onAlphabetInputChange($event)" placeholder="Enter Country Name" required maxlength="150">
+              <input type="text" class="form-control" id="countryName" formControlName="CountryName"  placeholder="Enter Country Name" required maxlength="150">
               <div *ngIf="formValue.controls['CountryName'].invalid && (formValue.controls['CountryName'].dirty || formValue.controls['CountryName'].touched)" class="text-danger">
                 <div *ngIf="formValue.controls['CountryName'].errors?.['required']">
                   Country Name is required.

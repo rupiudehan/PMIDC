@@ -16,6 +16,7 @@ export class UsersComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
   }
+  passwordVisible: boolean = false;
   RoleDetails: any[] = [];
   LevelDetails: any[] = [];
   UserDetails: any[] = [];
@@ -33,9 +34,10 @@ export class UsersComponent implements OnInit {
     private levelService: LevelService,
     private userService: UsersService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    
     this.getRoleDetails();
     this.getLevelDetails();
     this.getUserDetails();
@@ -43,12 +45,16 @@ export class UsersComponent implements OnInit {
       roleId: [0],
       levelId: [0],
       agencyName: ['', [Validators.required, Validators.maxLength(150)]],
-      email: ['', [Validators.required, Validators.maxLength(150)]],
-      password: ['', [Validators.required, Validators.maxLength(150)]],
+      email: ['', [Validators.required, Validators.pattern('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')]],
+      password: ['', [Validators.required, Validators.maxLength(8), Validators.minLength(8)]],
     });
     
     console.log('RoleDetails:', this.RoleDetails); // Add this line to debug
     console.log('LevelDetails:', this.LevelDetails);
+  }
+
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
   }
 
   getRoleDetails() {
@@ -74,7 +80,7 @@ export class UsersComponent implements OnInit {
 
   postUserDetails() {
     debugger;
-    const agencyName = this.formValue.value.agencyName.trim();
+    const agencyName = this.formValue.value.agencyName!=null?this.formValue.value.agencyName.trim():'';
     const email = this.formValue.value.email.trim();
     const password = this.formValue.value.password;
     const roleId = this.formValue.value.roleId;
@@ -87,9 +93,9 @@ export class UsersComponent implements OnInit {
     }
 
     const duplicate = this.UserDetails?.some(u => 
-        u.agencyName?.toLowerCase() === agencyName.toLowerCase() && 
+        u.agencyName?.toLowerCase() == agencyName.toLowerCase() ||
         u.roleId == roleId && 
-        u.levelId == levelId && 
+        u.levelId == levelId &&
         u.email?.toLowerCase() === email.toLowerCase()
     );
 
@@ -137,11 +143,11 @@ updateUser() {
 
   // Check for duplicate user information, excluding the current user being edited
   const duplicate = this.UserDetails?.some(u => 
-      u.agencyName?.toLowerCase() === agencyName.toLowerCase() && 
+      u.agencyName?.toLowerCase() === agencyName.toLowerCase() &&
       u.roleId === roleId && 
       u.levelId === levelId && 
       u.email.toLowerCase() === email.toLowerCase() && 
-      u.id !== this.currentUserId
+      u.id != this.currentUserId
   );
 
   if (duplicate) {
@@ -160,7 +166,7 @@ updateUser() {
       this.userService.updateUser(this.userModelObj)
           .subscribe((res: any) => {
               console.log(res);
-              this.toastr.success("User Updated Successfully");
+              // this.toastr.success("User Updated Successfully");
               this.getUserDetails();
               this.resetForm();
               this.isUpdate=false;
@@ -174,52 +180,75 @@ updateUser() {
 }
 
 
-  editUser(id: number | null) {
-    debugger;
-    if (id === null) {
-      console.error("Invalid user ID");
-      return;
-    }
-  
-    console.log("Editing user with ID:", id); 
-    this.userService.getDetailUser(id).subscribe(
-      (user: any) => {
-        if (user && user.length > 0) {
-          console.log("User", user);
-          this.formValue.patchValue({
-            agencyName: user[0].agencyName,
-            email: user[0].email,
-            password: user[0].password,
-            roleId: user[0].roleId,
-            levelId: user[0].levelId,
-            id: user[0].id
-          });
-          this.isUpdate=true;
-          this.currentUserId = id;
-        } else {
-          console.error("User not found for ID:", id); 
-          this.toastr.error("User not found");
-        }
-      },
-      (error: any) => {
-        console.error("Error fetching User details:", error);
-      }
-    );
+editUser(id: number | null) {
+  debugger;
+  if (id === null) {
+    console.error("Invalid user ID");
+    return;
   }
+
+  console.log("Editing user with ID:", id); 
+  this.userService.getDetailUser(id).subscribe(
+    (user: any) => {
+      if (user && user.length > 0) {
+        console.log("User", user);
+        this.formValue.patchValue({
+          agencyName: user[0].agencyName,
+          email: user[0].email,
+          password: user[0].password,
+          roleId: user[0].roleId,
+          levelId: user[0].levelId,
+          id: user[0].id
+        });
+        this.isUpdate = true;
+        this.currentUserId = id;
+        
+      } else {
+        console.error("User not found for ID:", id); 
+        this.toastr.error("User not found");
+      }
+    },
+    (error: any) => {
+      console.error("Error fetching User details:", error);
+    }
+  );
+}
+
   
     
   resetForm() {
+    debugger;
     this.formValue.reset();
-    this.currentUserId = null;
+    this.currentUserId = 0;
+    this.formValue.value.agencyName= '';
+    this.formValue.get('email')?.enable();
+    this.formValue.value.email= '';
+    this.formValue.value.id=0;
+}
+
+onEditClick() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
 
   cancel() {
     this.formValue.reset();
     this.currentUserId = null;
+    this.formValue.value.id=0;
+    this.formValue.value.agencyName="";
+    this.isUpdate=false;
+    
   }
   onSubmit(obj :any){
     debugger
-    const id = this.formValue.value.id;
+    
+    if (this.email?.invalid) {
+      this.toastr.error("Email is invalid");
+      return;
+    }
+  
+
+    const id = this.currentUserId;
     if(id==0|| id==null) 
       {
         this.postUserDetails();
@@ -241,6 +270,10 @@ updateUser() {
         this.toastr.success("User Deleted Successfully");
         this.UserDetails = this.UserDetails.filter((user: any) => user.id !== id);
       });
+  }
+
+  get email(){
+    return this.formValue.get('email');
   }
 
   editing(id: number) {

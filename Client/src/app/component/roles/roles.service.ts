@@ -26,6 +26,8 @@ export class RolesService {
     return this.http.get<any>(`http://localhost:3000/api/roles/${id}`);
   }
 
+  
+
   constructor(private http: HttpClient) { }
 
   postRole(data:any){

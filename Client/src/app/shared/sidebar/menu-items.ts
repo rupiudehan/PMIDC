@@ -34,14 +34,14 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: []
   },
-  {
-    path: '/component/roles',
-    title: 'Roles',
-    icon: 'bi bi-person-fill',
-    class: '',
-    extralink: false,
-    submenu: []
-  },
+  // {
+  //   path: '/component/roles',
+  //   title: 'Roles',
+  //   icon: 'bi bi-person-fill',
+  //   class: '',
+  //   extralink: false,
+  //   submenu: []
+  // },
   {
     path: '/component/users',
     title: 'Users',

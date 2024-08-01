@@ -52,4 +52,11 @@ export class UsersService {
   fetchUserById(id: number): Observable<any> {
     return this.http.get<any>(`http://localhost:3000/api/user/${id}`);
   }
+
+  getUserByEmail(id : number){
+  
+    return this.http.get<any>(`http://localhost:3000/api/user/${id}`)
+  }
+
+
 }

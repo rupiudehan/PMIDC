@@ -28,6 +28,40 @@ order by t.no`, (error, results) => {
         }
     },
 
+    getPieChart: async (req, res) => {
+      try {
+          pool.query(`select *from(
+	 select (select sum("funds") from funds) - (select sum("limit") from assign_limits) as title,
+	1 as no union  select sum ("limit")title,
+	2 as no from assign_limits)t
+order by t.no`, (error, results) => {
+              if (error) {
+                throw error
+              }
+              res.status(200).json(results.rows);
+            })
+          
+      } catch (err) {
+          console.error('Error fetching Total Users', err);
+          res.status(500).json({ error: 'Failed to fetch total users' });
+      }
+  },
+  getBarGraph: async (req, res) => {
+    try {
+        pool.query(`select sum("limit"),u."agencyName" from assign_limits al inner join users u on  al."userId"=u."id" group by u."agencyName" order by u."agencyName" desc`, (error, results) => {
+            if (error) {
+              throw error
+            }
+            res.status(200).json(results.rows);
+          })
+        
+    } catch (err) {
+        console.error('Error fetching Total Users', err);
+        res.status(500).json({ error: 'Failed to fetch total users' });
+    }
+},
+
+
     
 };
 

@@ -5,7 +5,7 @@
       
       <div class="card my-5">
         <div class="card-body">
-          <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Register Sub-Component</b></h3>
+          <h3 class="mb-3" style="text-align: center; padding-top: 10px;"><b>Add Sub-Component</b></h3>
           <form [formGroup]="formValue" (ngSubmit)="onSubmit(formValue.value)">
 
           <div class="row justify-content-center">
@@ -13,14 +13,14 @@
               <label class="form-label" for="schemeId"><h5>Scheme</h5></label>
               <select class="form-select" id="schemeId" formControlName="schemeId">
                 <option value="" selected disabled>Select Scheme</option>
-                <option *ngFor="let scheme of SchemeDetails"  value="{{scheme.id}}">{{ scheme.schemeName }}</option>
+                <option *ngFor="let scheme of SchemeDetails" value="{{scheme.id}}">{{ scheme.schemeName }}</option>
                 </select>
             </div>
             <div class="col-md-5 mb-3">
               <label class="form-label" for="subSchemeId"><h5>Sub-Scheme</h5></label>
               <select class="form-select" id="subSchemeId" formControlName="subSchemeId" required>
               <option value="" selected disabled>Select Sub-Scheme (Select Scheme first)</option>
-              <option *ngFor="let subScheme of SubSchemeDetails"  value="{{subScheme.id}}">{{ subScheme.subScheme }}</option>
+              <option *ngFor="let subScheme of filteredSubSchemes"  value="{{subScheme.id}}">{{ subScheme.subScheme }}</option>
                 </select>
             </div>
           </div>
@@ -32,7 +32,7 @@
             </div>
             <div class="col-md-5 mb-3">
               <label class="form-label" for="componentCode"><h5>Component Code</h5></label>
-              <input type="text" class="form-control" id="componentCode" formControlName="componentCode" (input)="onAlphabetInputChange($event)" placeholder="Enter Postal Code" required>
+              <input type="text" class="form-control" id="componentCode" formControlName="componentCode" (input)="onlyIntNotAllowed($event)" placeholder="Enter Component Code" required>
             </div>
           </div>
           
@@ -56,6 +56,7 @@
               <th scope="col">Scheme</th>
               <th scope="col">Sub-Scheme</th>
               <th scope="col">Sub-Component</th>
+              <th scope="col">Component Code</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -65,6 +66,7 @@
               <td>{{ subComponent.schemeName }}</td>
               <td>{{ subComponent.subScheme }}</td> 
               <td>{{ subComponent.subComponent }}</td> 
+              <td>{{ subComponent.componentCode }}</td> 
               
               <td>
                 <i class="fa fa-pencil" (click)="editing(subComponent.id)" aria-hidden="true" style="cursor: pointer;"></i>

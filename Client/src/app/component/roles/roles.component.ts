@@ -49,6 +49,10 @@ export class RolesComponent {
 
     if (duplicate) {
       this.toastr.error("Role already exists");
+      this.formVal.reset();
+      this.currentRoleId = 0;
+      this.formVal.value.id=0;
+      this.formVal.value.RoleName="";
       return;
     }
     
@@ -70,8 +74,11 @@ export class RolesComponent {
       }
       else{
        this.toastr.success("Role Added Successfully")
-       this.getRoleDetails()
-       this.formVal.reset()
+       this.getRoleDetails();
+       this.formVal.reset();
+       this.currentRoleId = 0;
+       this.formVal.value.id=0;
+       this.formVal.value.RoleName="";
     }
     },
     (error: any)=>{

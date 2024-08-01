@@ -10,26 +10,26 @@ export const topcards: topcard[] = [
     {
         bgcolor: 'success',
         icon: 'bi bi-wallet',
-        title: '$21k',
+        title: '0',
         subtitle: 'Users'
     },
     {
         bgcolor: 'danger',
         icon: 'bi bi-coin',
-        title: '$1k',
+        title: '0',
         subtitle: 'Funds Added'
     },
     {
         bgcolor: 'warning',
         icon: 'bi bi-basket3',
-        title: '456',
+        title: '0',
         subtitle: 'Funds Available'
     },
     {
         bgcolor: 'info',
         icon: 'bi bi-bag',
-        title: '210',
-        subtitle: 'Funds Used'
+        title: '0',
+        subtitle: 'Funds Assigned'
     },
 
 ] 

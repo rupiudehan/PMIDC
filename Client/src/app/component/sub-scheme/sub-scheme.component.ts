@@ -77,6 +77,7 @@ export class SubSchemeComponent implements OnInit {
 
     if (duplicate) {
         this.toastr.error("Sub-Scheme already exists in the selected Scheme");
+        this.formValue.reset();
         return;
     }
 

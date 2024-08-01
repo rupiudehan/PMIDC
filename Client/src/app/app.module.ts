@@ -24,6 +24,9 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { DefaultLayoutComponent } from './default-layout/default-layout.component';
 import { LoginLayoutComponent } from './login-layout/login-layout.component';
 import { AlphabetOnlyDirective } from './alphabet-only.directive';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { ChartModule } from 'angular-highcharts';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 
@@ -38,7 +41,8 @@ import { AlphabetOnlyDirective } from './alphabet-only.directive';
     SpinnerComponent,
     DefaultLayoutComponent,
     LoginLayoutComponent,
-    AlphabetOnlyDirective
+    AlphabetOnlyDirective,
+    
     
   ],
   imports: [
@@ -52,8 +56,10 @@ import { AlphabetOnlyDirective } from './alphabet-only.directive';
     RouterModule.forRoot(Approutes, { useHash: false }),
     FullComponent,
     SidebarComponent,
+    HighchartsChartModule,
+    ChartModule,
     NavigationComponent,
-    ToastrModule.forRoot({positionClass: 'toast-top-right'})
+    ToastrModule.forRoot({positionClass: 'toast-top-right'}),
   ],
   providers: [
     {

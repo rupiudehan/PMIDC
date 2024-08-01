@@ -6,6 +6,8 @@ const userCountController = require('../Controllers/dashboard.controller');
 // Countries routes
 // router.post('/countries', countryController.createCountry);
 router.get('/dashboard', userCountController.getAllUser);
+router.get('/piechart', userCountController.getPieChart);
+router.get('/bargraph', userCountController.getBarGraph);
 // router.put('/countries/:id', countryController.updateCountry);
 // router.delete('/countries/:id', countryController.deleteCountry);
 // router.get('/dashboard', userCountController.getTotalAmount);

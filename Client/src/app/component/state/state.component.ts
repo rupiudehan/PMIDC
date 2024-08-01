@@ -71,8 +71,12 @@ export class StateComponent implements OnInit {
 
     if (duplicate) {
         this.toastr.error("State already exists in the selected country");
-        return;
+        this.formValue.reset();
+        this.formValue.controls['CountryName'].reset();
+        this.formValue.controls['StateName'].reset(); // Reset the input box
+        return;   
     }
+    
 
     this.stateModelObj.stateName = stateName;
     this.stateModelObj.countryId = countryId;

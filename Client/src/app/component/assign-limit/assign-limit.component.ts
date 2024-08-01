@@ -26,6 +26,7 @@ export class AssignLimitComponent implements OnInit {
   isUpdate: boolean = false;
 
   detailsData: any[]=[];
+  filteredUsers: any[]=[];
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -47,6 +48,14 @@ export class AssignLimitComponent implements OnInit {
       levelId: [0],
       limit: ['', [Validators.required, Validators.maxLength(150)]],
     });
+
+    this.formValue.get('levelId')?.valueChanges.subscribe((levelId) => {
+      this.filteredUsers = this.UserDetails.filter(
+        (agencyName) => agencyName.levelId == levelId
+      );
+      this.formValue.get('userId')?.setValue(''); // Reset sub-scheme selection
+    });
+    
     
     console.log('SchemeDetails:', this.SchemeDetails);
     console.log('LevelDetails:', this.LevelDetails);
@@ -81,6 +90,12 @@ export class AssignLimitComponent implements OnInit {
     });
   }
 
+  
+
+  // onEditClick() {
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // }
+
   postLimits() {
     debugger;
     const limit = this.formValue.value.limit;
@@ -111,22 +126,35 @@ export class AssignLimitComponent implements OnInit {
     this.limitModelObj.schemeId = schemeId;
     this.limitModelObj.userId = userId;
 
-    if (this.currentLimitId === null || this.currentLimitId === 0) {
-        this.limitModelObj.id = ++this.lastUsedId;
-        this.assignLimitService.postLimits(this.limitModelObj)
-            .subscribe(res => {
-                console.log(res);
-                this.toastr.success("Limit Added Successfully");
-                this.getLimitDetails();
-                this.resetForm();
-            },
-            err => {
-                this.toastr.error("Something went wrong");
-            });
-    } else {
-        this.updateLimit();
-    }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to assign this limit? You won\'t be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (this.currentLimitId === null || this.currentLimitId === 0) {
+                this.limitModelObj.id = ++this.lastUsedId;
+                this.assignLimitService.postLimits(this.limitModelObj)
+                    .subscribe(res => {
+                        console.log(res);
+                        this.toastr.success("Limit Added Successfully");
+                        this.getLimitDetails();
+                        this.resetForm();
+                    },
+                    err => {
+                        this.toastr.error("Something went wrong");
+                    });
+            } else {
+                this.updateLimit();
+            }
+        }
+    });
 }
+
 
 
 updateLimit() {
@@ -205,6 +233,9 @@ updateLimit() {
           });
           this.isUpdate=true;
           this.currentLimitId = id;
+          this.formValue.get('schemeId')?.disable();
+          this.formValue.get('levelId')?.disable();
+          this.formValue.get('userId')?.disable();
         } else {
           console.error("Limit not found for ID:", id); 
           this.toastr.error("Limit not found");
@@ -225,6 +256,7 @@ updateLimit() {
   cancel() {
     this.formValue.reset();
     this.currentLimitId = null;
+    this.isUpdate=false;
   }
   onSubmit(obj :any){
     debugger

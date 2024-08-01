@@ -93,7 +93,25 @@ const roleController = {
         console.error('Error updating role:', err);
         res.status(500).json({ error: 'Failed to get role' });
       }
-  }
+  },
+
+  getRoleId: async (req, res) => {
+    const {id} = req.params;
+    debugger
+    try {
+      pool.query(`SELECT * from role where id=${16}`, (error, results) => {
+          if (error) {
+            throw error
+          }
+          res.status(200).json(results.rows);
+          //res.status(200).json({ message: 'Role fetched successfully' });
+        })
+  } catch (err) {
+      console.error('Error updating role:', err);
+      res.status(500).json({ error: 'Failed to get role' });
+    }
+}
+
 };
 
 module.exports = roleController;

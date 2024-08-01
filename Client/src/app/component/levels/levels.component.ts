@@ -52,6 +52,10 @@ ngOnInit(): void {
 
     if (duplicate) {
       this.toastr.error("Level already exists");
+      this.formValue.reset();
+      this.currentLevelId = 0;
+    this.formValue.value.id=0;
+    this.formValue.value.LevelName="";
       return;
     }
 
@@ -75,8 +79,11 @@ ngOnInit(): void {
       }
       else{
         this.toastr.success("Level Added Successfully")
-      this.getLevelDetails()
-      this.formValue.reset()
+      this.getLevelDetails();
+      this.formValue.reset();
+      this.currentLevelId = 0;
+    this.formValue.value.id=0;
+    this.formValue.value.LevelName="";
     }
     },
     (error: any)=>{
@@ -94,6 +101,12 @@ onSubmit(obj :any){
     else{
       // this.editLevel(this.currentLevelId);
       this.updateLevel(obj);
+      const levelName = this.formValue.value.LevelName?.trim();
+
+  if (!levelName) {
+      // this.toastr.error("Please enter a level name");
+      return;
+  }
       this.toastr.success("Level Updated Successfully");
       this.getLevelDetails();
       this.resetForm();

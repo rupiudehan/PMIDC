@@ -10,6 +10,7 @@
   
             <div class="row justify-content-center">
               <div class="col-md-5 mb-3">
+                <input type="hidden" value="0" id="id" formControlName="id">
                 <label class="form-label" for="roleId"><h5>Select Role</h5></label>
                 <select class="form-select" id="roleId" formControlName="roleId">
                   <option value="" selected disabled>Choose Role</option>
@@ -43,7 +44,12 @@
               </div>
               <div class="col-md-5 mb-3">
                 <label class="form-label" for="email"><h5>Email</h5></label>
-                <input type="text" class="form-control" id="email" formControlName="email" placeholder="Enter Email" required maxlength="150">
+                <!-- <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter Email"  required maxlength="150"> -->
+                <input type="email" id="email" class="form-control" formControlName="email">
+      <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger">
+        <div *ngIf="email?.errors?.['required']">Email is required.</div>
+        <div *ngIf="email?.errors?.['pattern']">Invalid email format.</div>
+      </div>
                 <!-- <div *ngIf="formValue.controls['CountryName'].invalid && (formValue.controls['CountryName'].dirty || formValue.controls['CountryName'].touched)" class="text-danger">
                   <div *ngIf="formValue.controls['CountryName'].errors?.['required']">
                     Country Name is required.
@@ -55,23 +61,44 @@
               </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-5 mb-3">
-                    <label class="form-label" for="password"><h5>Password</h5></label>
-                    <input type="password" class="form-control" id="password" formControlName="password" placeholder="Enter Password" required minlength="8">
+              <div class="col-md-5 mb-3">
+                <label class="form-label" for="password">
+                  <h5>Password</h5>
+                </label>
+                <div class="input-group">
+                  <input
+                    [type]="passwordVisible ? 'text' : 'password'"
+                    class="form-control"
+                    id="password"
+                    formControlName="password"
+                    placeholder="Enter Password"
+                    required
+                    maxlength="8"
+                    minlength="8"
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                  >
+                    <i [class]="passwordVisible ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                  </button>
                 </div>
               </div>
+            </div>
+            
             
             
   
             <div class="row justify-content-center">
               <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%">{{isUpdate?'Update':'Add'}}</button>
-              <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px" (click)="cancel()" >Reset</button>
+              <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px" (click)="resetForm()" >Reset</button>
          </div>
         </form>
          <div class="card-body p-5">
           <div class="row mb-4">
             <div class="col-md-6">
-              <input type="text" class="form-control" placeholder="Search..." #searchInput />
+              <input type="text" class="form-control"  placeholder="Search..." #searchInput />
             </div>
           </div>
           <!--table-->
@@ -87,7 +114,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let user of UserDetails; let i = index">
+              <tr *ngFor="let user of UserDetails; let i = index"  >
                 <th scope="row">{{ i+1 }}</th> 
                 <td>{{ user.agencyName }}</td>
                 <td>{{ user.roleName }}</td>

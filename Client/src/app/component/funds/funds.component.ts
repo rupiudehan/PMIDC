@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormGroup , FormBuilder, Validators } from '@angular/forms';
+import { FormGroup , FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { FundsModel } from './funds.model';
 import { FundsService } from './funds.service';
 import { ToastrService } from 'ngx-toastr';
+import { maxDigitValidator } from 'src/app/maxDigitValidator';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -31,47 +32,74 @@ export class FundsComponent {
     this.getFundDetails();
     this.formValue = this.FormBuilder.group({
       id:[0],
-      Funds : ['', [Validators.required, Validators.maxLength(150)]],
+      Funds : ['', [Validators.required, Validators.maxLength(17), maxDigitValidator(17)]],
     })    
 
   }
+  onInputChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+  
+    if (value.length > 17) {
+      inputElement.value = value.slice(0, 17);
+    }
+  }
+  
+
+//   maxDigitsValidator(maxDigits: number): ValidatorFn {
+//     return (control: AbstractControl): { [key: string]: any } | null => {
+//         const value = control.value;
+//         if (value && value.toString().length > maxDigits) {
+//             return { 'maxDigits': true };
+//         }
+//         return null;
+//     };
+// }
   
   postFundDetails(){
-    debugger
+    debugger;
     const funds = this.formValue.value.Funds; 
 
+    // Check if funds is null or 0
+    if(funds == null || funds == 0) {
+        this.toastr.warning("Please Enter Amount");
+        return;
+    }
 
     // const duplicate = this.FundDetails?.some(f => f.funds?.toLowerCase() === funds.toLowerCase());
 
     // if (duplicate) {
-    //   alert("Country already exists");
+    //   alert("Funds already exist");
     //   return;
     // }
-    
 
     this.fundsModelObj.id = ++this.lastUsedId;
-    this.fundsModelObj.Funds = this.formValue.value.Funds;
-    const fnds = this.fundsModelObj.Funds ;
+    this.fundsModelObj.Funds = funds;
 
-    if( fnds === null || fnds === 0)
-      {
-           this.toastr.warning("Please Enter Amount");
-      }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to add this amount? You won\'t be able to revert this! ",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.api.postFunds(this.fundsModelObj)
+            .subscribe(res => {
+                console.log(res);
+                this.toastr.success("Funds Added Successfully");
+                this.getFundDetails();
+                this.formValue.reset();
+            },
+            err => {
+                this.toastr.error("Something went wrong");
+            });
+        }
+    });
+}
 
-    else{this.api.postFunds(this.fundsModelObj)
-    .subscribe(res=>{
-      console.log(res);
-      if(this.fundsModelObj.Funds==0 || this.fundsModelObj.Funds === null){}
-      else{
-      this.toastr.success("Funds Added Successfully")
-      this.getFundDetails()
-      this.formValue.reset()
-    }
-    },
-    err=>{
-      this.toastr.error("something went wrong")
-    })}
-  }
 
 onSubmit(obj :any){
   debugger
@@ -83,7 +111,7 @@ onSubmit(obj :any){
     else{
       //this.editCountry(this.currentCountryId);
       this.updateFunds(obj);
-      this.toastr.success("Fund Updated Successfully");
+      // this.toastr.success("Fund Updated Successfully");
       this.getFundDetails();
       this.resetForm();
       obj.id=0;
@@ -140,36 +168,44 @@ onSubmit(obj :any){
 }
 
 
-  updateFunds(obj:any) {
-    debugger;
-    const funds = this.formValue.value.Funds; // Trim spaces
-  
-    // Check for duplicate country names, excluding the current country being edited
-    // const duplicate = this.FundDetails?.some(f => f.Funds?.toLowerCase() === funds.toLowerCase() && f.id !== this.currentFundId);
-  
-    // if (duplicate) {
-    //   this.toastr.error("Fund already exists");
-    //   return;
-    // }
-  
-    if (this.currentFundId !== null) {
-      this.fundsModelObj.Funds = funds; // Use trimmed value
-      this.fundsModelObj.id = this.currentFundId;
-  
-      this.api.updateFunds(obj)
-        .subscribe(res => {
-          //console.log(res);
-          this.formValue.value.id=0;
-          this.isUpdate=false;
-        
-        },
-        err => {
-          this.toastr.error("Something went wrong");
-        });
-    } else {
-      this.toastr.error("Invalid Fund ID");
-    }
+updateFunds(obj: any) {
+  debugger;
+  const funds = this.formValue.value.Funds; // Get the value from the form
+
+  // Check if the funds value is null, empty, or consists only of whitespace
+  if (!funds || funds === '') {
+    this.toastr.warning("Please enter a valid fund name");
+    return;
   }
+
+  // Check for duplicate fund names, excluding the current fund being edited
+  // const duplicate = this.FundDetails?.some(f => f.Funds?.toLowerCase() === funds.toLowerCase() && f.id !== this.currentFundId);
+
+  // if (duplicate) {
+  //   this.toastr.error("Fund already exists");
+  //   return;
+  // }
+
+  if (this.currentFundId !== null) {
+    this.fundsModelObj.Funds = funds; // Use the value from the form
+    this.fundsModelObj.id = this.currentFundId;
+
+    this.api.updateFunds(this.fundsModelObj)
+      .subscribe(res => {
+        this.toastr.success("Fund updated successfully");
+        this.formValue.reset();
+        this.isUpdate = false;
+        this.getFundDetails();
+      },
+      err => {
+        this.toastr.error("Something went wrong");
+      });
+  } else {
+    this.toastr.error("Invalid Fund ID");
+  }
+}
+
+
 
   editFunds(id: any){
     // debugger;

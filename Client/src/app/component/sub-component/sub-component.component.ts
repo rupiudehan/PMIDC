@@ -13,9 +13,16 @@ import Swal from 'sweetalert2';
   styleUrls: ['./sub-component.component.scss']
 })
 export class SubComponentComponent implements OnInit {
+  
+  
   onAlphabetInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+  }
+
+  onlyIntNotAllowed(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^a-zA-Z0-9\s]/g, '');
   }
   SchemeDetails: any[] = [];
   SubSchemeDetails: any[] = [];
@@ -27,6 +34,7 @@ export class SubComponentComponent implements OnInit {
   api: any;
   isUpdate: boolean = false;
   detailsData: any[]=[];
+  filteredSubSchemes: any[] =[];
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -46,6 +54,13 @@ export class SubComponentComponent implements OnInit {
       subComponent: ['', [Validators.required, Validators.maxLength(150)]],
       componentCode: ['', [Validators.required, Validators.maxLength(150)]],
     });
+    this.formValue.get('schemeId')?.valueChanges.subscribe((schemeId) => {
+      this.filteredSubSchemes = this.SubSchemeDetails.filter(
+        (subScheme) => subScheme.schemeId == schemeId
+      );
+      this.formValue.get('subSchemeId')?.setValue(''); // Reset sub-scheme selection
+    });
+    
     
     console.log('SchemeDetails:', this.SchemeDetails);
     console.log('SubSchemeDetails:', this.SubSchemeDetails); // Add this line to debug
@@ -57,6 +72,21 @@ export class SubComponentComponent implements OnInit {
       this.SchemeDetails = res;
     });
   }
+
+  // onSchemeChange(event : any): void{
+  //   const id = event.target.value;
+  //   console.log("scheme Id", id);
+  //   this.subSchemeById(id);
+  //}
+  
+  // subSchemeById(id: number): void {
+  //   this.SubSchemeDetails = this.subSchemeService.getSubSchemebyId(id).subscribe((res: any) => {
+  //     console.log('Sub-Scheme API Response:', res); // Add this line to debug
+  //     this.SubSchemeDetails = res;
+  //   });
+  // }
+
+
   getSubSchemeDetails() {
     this.subSchemeService.getSubScheme().subscribe((res: any) => {
       console.log('Sub-Scheme API Response:', res); // Add this line to debug
@@ -86,7 +116,7 @@ export class SubComponentComponent implements OnInit {
     }
 
     const duplicate = this.SubComponentDetails?.some(s => 
-        s.subComponent?.toLowerCase() === subComponent.toLowerCase() && 
+        s.subComponent?.toLowerCase() === subComponent.toLowerCase() ||
         s.componentCode?.toLowerCase() === componentCode.toLowerCase() && 
         s.schemeId == schemeId && 
         s.subSchemeId == subSchemeId
@@ -94,6 +124,7 @@ export class SubComponentComponent implements OnInit {
 
     if (duplicate) {
         this.toastr.error("Sub-Component already exists in the selected Scheme");
+        this.formValue.reset();
         return;
     }
 

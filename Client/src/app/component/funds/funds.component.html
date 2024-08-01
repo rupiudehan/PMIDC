@@ -11,20 +11,25 @@
             <div class="row" class="row justify-content-center">
               <div class="col-md-6 mb-3">
                 <label class="form-label" for="funds"><h5>Amount</h5></label>
-              <input  type="number" class="form-control" id="funds" formControlName= "Funds" placeholder="Enter Amount" required maxlength="150">
+              <input  type="number" class="form-control" id="funds" formControlName= "Funds" (input)="onInputChange($event)" placeholder="Enter Amount" min="0" max="17" required>
+              <div *ngIf="formValue.controls['Funds'].hasError('maxDigits')">
+                <small class="text-danger">Amount cannot exceed 17 digits.</small>
+            </div>
+            
               </div>
             </div>
   
             <div class="row justify-content-center">
+              <!-- <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%" [disabled]="formValue.controls['Funds'].invalid">Add</button> -->
               <button type="submit" class="btn btn-primary btn-block btn-responsive" style="width: 15%">{{isUpdate?'Update':'Add'}}</button>
               <button type="button" class="btn btn-secondary btn-block btn-responsive" style="width: 15%;margin-left: 20px" (click)="resetForm()">Reset</button>
          </div>
         </form>
          <div class="card-body p-5">
           <div class="row mb-4">
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <input type="text" class="form-control" placeholder="Search..." #searchInput />
-            </div>
+            </div> -->
           </div>
           <!--table-->
           <table class="table table-striped">
@@ -32,19 +37,19 @@
               <tr>
                 <th scope="col">Sr No.</th>
                 <th scope="col">Amount</th>
-                <!-- <th scope="col">Date</th> -->
-                <th scope="col">Action</th>
+                <th scope="col">Date</th>
+                <!-- <th scope="col">Action</th> -->
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let fund of FundDetails; let i = index">
                 <th scope="row">{{ i+1 }}</th> 
                 <td>{{ fund.funds }}</td> 
-                <!-- <td></td> -->
-                <td>
+                <td></td>
+                <!-- <td>
                   <i class="fa fa-pencil" (click)="editFunds(fund.id)" aria-hidden="true" style="cursor: pointer;"></i>
                   <i class="fa fa-trash" (click)="deleteFunds(fund.id)" aria-hidden="true"  style="margin-left: 16px; cursor: pointer;" ></i>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>

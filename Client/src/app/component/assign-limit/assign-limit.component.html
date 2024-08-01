@@ -20,7 +20,7 @@
                 <label class="form-label" for="userId"><h5>Select Agency Name</h5></label>
                 <select class="form-select" id="userId" formControlName="userId" required >
                   <option value="" selected disabled>Choose IA/State Name (Select Level first)</option>
-                  <option *ngFor="let users of UserDetails"  value="{{users.id}}">{{ users.agencyName }}</option>
+                  <option *ngFor="let users of filteredUsers"  value="{{users.id}}">{{ users.agencyName }}</option>
                   </select>
               </div>
             </div>
@@ -35,7 +35,7 @@
               </div>
               <div class="col-md-5 mb-3">
                 <label class="form-label" for="limit"><h5>Assign Limit</h5></label>
-                <input type="text" class="form-control" id="limit" formControlName="limit" placeholder="Assign Limit" required>
+                <input type="number" class="form-control" id="limit" formControlName="limit" placeholder="Assign Limit" required>
               </div>
             </div>
             
@@ -60,7 +60,7 @@
                 <th scope="col">IA/State </th>
                 <th scope="col">Scheme </th>
                 <th scope="col">Limit </th>
-                <th scope="col">Action</th>
+                <!-- <th scope="col">Action</th> -->
               </tr>
             </thead>
             <tbody>
@@ -70,10 +70,10 @@
                 <td>{{ limit.agencyName }}</td> 
                 <td>{{ limit.schemeName }}</td> 
                 <td>{{ limit.limit }}</td> 
-                <td>
+                <!-- <td>
                   <i class="fa fa-pencil" (click)="editing(limit.id)" aria-hidden="true" style="cursor: pointer;"></i>
                   <i class="fa fa-trash" (click)="deleteLimit(limit.id)" style="margin-left: 16px; cursor: pointer;"></i>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>

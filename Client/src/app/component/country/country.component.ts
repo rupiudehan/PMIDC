@@ -12,6 +12,9 @@ import Swal from 'sweetalert2';
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss']
 })
+
+
+
 export class CountryComponent {
 
   CountryDetails: any[] = [];
@@ -37,47 +40,63 @@ export class CountryComponent {
     this.getCountryDetails();
     this.formValue = this.FormBuilder.group({
       id:[0],
-      CountryName : ['', [Validators.required, Validators.maxLength(150)]],
+      CountryName : ['', [Validators.required, Validators.maxLength(150),this.alphabetOnlyValidator()]],
     })    
 
   }
+
   
-  postCountryDetails(){
-    debugger
-    const countryName = this.formValue.value.CountryName.trim(); 
 
-
-    const duplicate = this.CountryDetails?.some(c => c.countryName?.toLowerCase() === countryName.toLowerCase());
-
-    if (duplicate) {
-      this.toastr.error("Country already exists");
-      return;
-    }
-    
-
-    this.countryModelObj.id = ++this.lastUsedId;
-    this.countryModelObj.CountryName = this.formValue.value.CountryName.trim();
-    const country = this.countryModelObj.CountryName ;
-
-    if( country == "" || country == '0')
-      {
-           this.toastr.warning("Please Enter a Country");
-      }
-
-    else{this.api.postCountry(this.countryModelObj)
-    .subscribe(res=>{
-      console.log(res);
-      if(this.countryModelObj.CountryName.length==0 || this.countryModelObj.CountryName.trim()=== ''){}
-      else{
-      this.toastr.success("Country Added Successfully")
-      this.getCountryDetails()
-      this.formValue.reset()
-    }
-    },
-    err=>{
-      this.toastr.error("something went wrong")
-    })}
+  alphabetOnlyValidator() {
+    debugger;
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valid = /^[a-zA-Z\s]*$/.test(control.value);  // Allow alphabets and spaces only
+      return valid ? null : { alphabetOnly: true };
+    };
   }
+  
+  postCountryDetails() {
+  debugger;
+  const countryName = this.formValue.value.CountryName.trim(); // Trim spaces
+
+  // Check for duplicate country names
+  const duplicate = this.CountryDetails?.some(c => c.countryName?.toLowerCase() === countryName.toLowerCase());
+
+  if (duplicate) {
+    this.toastr.error("Country already exists");
+    this.formValue.controls['CountryName'].reset(); // Reset the input box
+    return;
+  }
+
+  this.countryModelObj.id = ++this.lastUsedId;
+  this.countryModelObj.CountryName = this.formValue.value.CountryName.trim();
+  const country = this.countryModelObj.CountryName;
+
+  if (country == "" || country == '0') {
+    this.toastr.warning("Please Enter a Country");
+    return; // Return early to avoid making the API call
+  }
+
+  this.api.postCountry(this.countryModelObj).subscribe(
+    res => {
+      console.log(res);
+      if (this.countryModelObj.CountryName.length == 0 || this.countryModelObj.CountryName.trim() === '') {
+        // This condition will not be met as we've already checked for this
+      } else {
+        this.toastr.success("Country Added Successfully");
+        this.getCountryDetails();
+        this.formValue.reset();
+        this.currentCountryId = null;
+        this.formValue.value.id=0;
+        this.formValue.value.CountryName="";
+      }
+    },
+    err => {
+      this.toastr.error("something went wrong");
+    }
+  );
+}
+
 
 onSubmit(obj :any){
   debugger
@@ -89,9 +108,18 @@ onSubmit(obj :any){
     else{
       //this.editCountry(this.currentCountryId);
       this.updateCountry(obj);
-      this.toastr.success("Country Updated Successfully");
+      const countryName = this.formValue.value.CountryName?.trim();
+
+  if (!countryName) {
+      // this.toastr.error("Please enter a country name");
+      this.formValue.reset();
+      return;
+      }
+      
+      // this.toastr.success("Country Updated Successfully");
+      this.isUpdate=false;
       this.getCountryDetails();
-      this.resetForm();
+      //this.resetForm();
       obj.id=0;
       
     }
@@ -150,6 +178,7 @@ onSubmit(obj :any){
 }
 
 onAlphabetInputChange(event: Event): void {
+  debugger;
   const input = event.target as HTMLInputElement;
   input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
 }
@@ -161,8 +190,9 @@ updateCountry(obj: any) {
 
   if (!countryName) {
       this.toastr.error("Please enter a country name");
+      // this.formValue.reset();
       return;
-  }
+      }
 
   // Check for duplicate country names, excluding the current country being edited
   const duplicate = this.CountryDetails?.some(c => c.countryName?.toLowerCase() === countryName.toLowerCase() && c.id !== this.currentCountryId);
@@ -179,10 +209,10 @@ updateCountry(obj: any) {
       this.api.updateCountry(this.countryModelObj)
           .subscribe(res => {
               console.log(res);
-              // this.toastr.success("Country Updated Successfully");
+              this.toastr.success("Country Updated Successfully");
               this.formValue.reset();
               this.getCountryDetails();
-              this.isUpdate=false;
+              // this.isUpdate=false;
           },
           err => {
               this.toastr.error("Something went wrong");

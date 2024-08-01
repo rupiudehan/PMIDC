@@ -32,6 +32,7 @@ export class SchemeComponent {
   row: any;
   level: any;
   isUpdate: boolean = false;
+  filteredSchemeDetails: any[] = [];
 
 
   constructor (private FormBuilder: FormBuilder,
@@ -46,6 +47,18 @@ export class SchemeComponent {
     })    
 
   }
+
+  onSearch(searchValue: string) {
+    if (!searchValue.trim()) {
+      // If search input is empty, show all countries
+      this.filteredSchemeDetails = this.SchemeDetails;
+    } else {
+      // Filter countries based on search input
+      this.filteredSchemeDetails = this.SchemeDetails.filter(scheme =>
+        scheme.SchemeName.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
+  }
   
   postSchemeDetails(){
     debugger
@@ -56,6 +69,10 @@ export class SchemeComponent {
 
     if (duplicate) {
       this.toastr.error("Scheme already exists");
+      this.resetForm();
+      this.currentSchemeId = 0;
+    this.formValue.value.id=0;
+    this.formValue.value.SchemeName="";
       return;
     }
     
@@ -77,8 +94,11 @@ export class SchemeComponent {
       }
       else{
         this.toastr.success("Scheme Added Successfully")
-      this.getSchemeDetails()
-      this.formValue.reset()
+      this.getSchemeDetails();
+      this.formValue.reset();
+      this.currentSchemeId = 0;
+      this.formValue.value.id=0;
+      this.formValue.value.SchemeName="";
     }
     },
     err=>{
