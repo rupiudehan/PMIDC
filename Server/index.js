@@ -167,19 +167,19 @@ app.get('/api/dashboard', async (req, res) => {
     }
 });
 
-app.get('/api/search/:user', async (req, res) => {
-    console.log(req.param.User)
-    let data = await User.find(
-        {
-            "$or": [
-                {
-                    "name":{$regex:req.param.User}
-                }
-            ]
-        }
-    )
-    res.send(data)
-})
+// app.get('/api/search/:user', async (req, res) => {
+//     console.log(req.param.User)
+//     let data = await User.find(
+//         {
+//             "$or": [
+//                 {
+//                     "name":{$regex:req.param.User}
+//                 }
+//             ]
+//         }
+//     )
+//     res.send(data)
+// })
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
