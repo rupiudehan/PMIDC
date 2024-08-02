@@ -206,6 +206,7 @@ updateSubComponent() {
 
   editSubComponent(id: number | null) {
     debugger;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (id === null) {
       console.error("Invalid Sub-Component ID");
       return;

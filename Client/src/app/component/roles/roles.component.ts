@@ -207,6 +207,7 @@ updateRole(obj: any) {
           RoleName: role[0].roleName,
           id: role[0].id
         });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         this.isUpdate=true;
         this.currentRoleId = id;
        

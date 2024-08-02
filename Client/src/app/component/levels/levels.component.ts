@@ -218,6 +218,7 @@ updateLevel(obj: any) {
           LevelName: level[0].levelName,
           id: level[0].id
         });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         this.isUpdate=true;
         this.currentLevelId = id;
        

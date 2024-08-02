@@ -45,7 +45,7 @@
               <tr *ngFor="let fund of FundDetails; let i = index">
                 <th scope="row">{{ i+1 }}</th> 
                 <td>{{ fund.funds }}</td> 
-                <td></td>
+                <td>{{fund.createdDate}}</td>
                 <!-- <td>
                   <i class="fa fa-pencil" (click)="editFunds(fund.id)" aria-hidden="true" style="cursor: pointer;"></i>
                   <i class="fa fa-trash" (click)="deleteFunds(fund.id)" aria-hidden="true"  style="margin-left: 16px; cursor: pointer;" ></i>

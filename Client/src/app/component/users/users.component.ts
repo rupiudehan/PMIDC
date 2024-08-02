@@ -182,6 +182,7 @@ updateUser() {
 
 editUser(id: number | null) {
   debugger;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   if (id === null) {
     console.error("Invalid user ID");
     return;
@@ -227,7 +228,7 @@ editUser(id: number | null) {
 }
 
 onEditClick() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+        
   }
 
 
@@ -241,7 +242,7 @@ onEditClick() {
   }
   onSubmit(obj :any){
     debugger
-    
+
     if (this.email?.invalid) {
       this.toastr.error("Email is invalid");
       return;
@@ -256,7 +257,7 @@ onEditClick() {
       else{
         //this.editCountry(this.currentCountryId);
         this.updateUser();
-        this.toastr.success("User Updated Successfully");
+        this.toastr.success("User Details Updated Successfully");
         this.getUserDetails();
         this.resetForm();
         obj.id=0;

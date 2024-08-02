@@ -235,6 +235,7 @@ updateCountry(obj: any) {
           CountryName: country[0].countryName,
           id: country[0].id
         });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         this.isUpdate=true;
         this.currentCountryId = id;
        

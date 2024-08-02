@@ -17,9 +17,11 @@ export class PieChartComponent implements OnInit{
       show: false
     }
   };
+
+
   chartTitle: ApexTitleSubtitle = {
     text: 'Funds Status',
-    align: 'left'
+    align: 'center'
   };
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}

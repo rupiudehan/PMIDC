@@ -1,4 +1,33 @@
 .chartContainer {
     width: 500px;
     height: 431px;
+    justify-content: center;
+    
+}
+
+.card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .apexcharts-legend {
+    // position: absolute;
+    left: auto;
+    top: 300px;
+    right: 5px;
+  }
+  .center-labels .apexcharts-datalabels {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    transform: translateY(-50%);
+}
+
+.center-labels .apexcharts-text {
+    text-anchor: middle !important;
+    dominant-baseline: central !important;
+    justify-content: center;
 }

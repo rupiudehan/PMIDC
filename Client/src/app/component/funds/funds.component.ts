@@ -78,12 +78,12 @@ export class FundsComponent {
 
     Swal.fire({
         title: 'Are you sure?',
-        text: "Do you want to add this amount? You won\'t be able to revert this! ",
+        text: "Do you want to add this amount? You won't be able to Edit or Delete this record! ",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, save it!'
+        confirmButtonText: 'Yes, add it!'
     }).then((result) => {
         if (result.isConfirmed) {
             this.api.postFunds(this.fundsModelObj)
@@ -219,6 +219,7 @@ updateFunds(obj: any) {
           Funds: funds[0].funds,
           id: funds[0].id
         });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         this.isUpdate=true;
         this.currentFundId = id;
        

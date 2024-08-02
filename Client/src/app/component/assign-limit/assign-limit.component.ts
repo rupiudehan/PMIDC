@@ -7,6 +7,7 @@ import { SchemeService } from '../scheme/scheme.service';
 import { AssignLimitService } from './assign-limit.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-assign-limit',
@@ -27,8 +28,9 @@ export class AssignLimitComponent implements OnInit {
 
   detailsData: any[]=[];
   filteredUsers: any[]=[];
-
-  constructor(
+  apiData: any[] = [];
+  maxAllowedAmount: number | null = null;
+  constructor(private http: HttpClient,
     private formBuilder: FormBuilder, 
     private levelService: LevelService,
     private userService: UsersService,
@@ -41,7 +43,7 @@ export class AssignLimitComponent implements OnInit {
     this.getLevelDetails();
     this.getUserDetails();
     this.getSchemeDetails();
-    this.getLimitDetails();
+    this.getLimitDetails();this.fetchApiData();
     this.formValue = this.formBuilder.group({
       schemeId: [0],
       userId: [0],
@@ -89,9 +91,20 @@ export class AssignLimitComponent implements OnInit {
       this.LimitDetails = res;
     });
   }
-
+  setMaxAllowedAmount(): void {
+    const item = this.apiData.find(x => x.no === 3);
+    if (item) {
+      this.maxAllowedAmount = parseFloat(item.title);
+    }
+  }
   
-
+  fetchApiData(): void {
+    this.http.get<any[]>('http://localhost:3000/api/dashboard')
+      .subscribe(data => {
+        this.apiData = data;
+        this.setMaxAllowedAmount();
+      });
+  }
   // onEditClick() {
   //   window.scrollTo({ top: 0, behavior: 'smooth' });
   // }
@@ -153,6 +166,8 @@ export class AssignLimitComponent implements OnInit {
             }
         }
     });
+
+    
 }
 
 
@@ -260,6 +275,16 @@ updateLimit() {
   }
   onSubmit(obj :any){
     debugger
+    if (this.formValue.valid) {
+      const enteredAmount = parseFloat(this.formValue.get('limit')?.value);
+
+      if (this.maxAllowedAmount !== null && enteredAmount > this.maxAllowedAmount) {
+        this.toastr.error(`Entered amount cannot be greater than ${this.maxAllowedAmount}`);
+        return;
+      } else {
+        // Proceed with form submission or other logic
+      }
+    }
     const id = this.formValue.value.id;
     if(id==0|| id==null) 
       {

@@ -117,7 +117,7 @@ updateState() {
   );
 
   if (duplicate) {
-      this.toastr.error("State already exists in the selected country");
+      this.toastr.error("State updated Successfully");
       return;
   }
 
@@ -130,7 +130,7 @@ updateState() {
           .subscribe(
               (res: any) => {
                   console.log(res);
-                  this.toastr.success("State Updated Successfully");
+                  // this.toastr.success("State Updated Successfully");
                   this.getStateDetails();
                   this.resetForm();
                   this.isUpdate=false;
@@ -148,6 +148,7 @@ updateState() {
 
   editState(id: number | null) {
     debugger;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (id === null) {
       console.error("Invalid state ID");
       return;
@@ -193,7 +194,7 @@ updateState() {
   }
   onSubmit(obj :any){
     debugger
-    const id = this.formValue.value.id;
+    const id = this.currentStateId;
 
     
 

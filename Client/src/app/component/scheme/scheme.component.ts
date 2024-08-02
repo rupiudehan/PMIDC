@@ -230,6 +230,7 @@ updateScheme(obj: any) {
           SchemeName: scheme[0].schemeName,
           id: scheme[0].id
         });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         this.isUpdate=true;
         this.currentSchemeId = id;
        

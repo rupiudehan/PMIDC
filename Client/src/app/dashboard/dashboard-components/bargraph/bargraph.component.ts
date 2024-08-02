@@ -29,7 +29,10 @@ export class BargraphComponent {
           data: seriesData
         }],
         chart: {
-          type: 'bar'
+          type: 'bar',
+          toolbar: {
+            show: false
+          }
         },
         xaxis: {
           categories: categories
@@ -44,9 +47,9 @@ export class BargraphComponent {
           enabled: false
         },
         title: {
-          text: 'Agency Sales',
+          text: 'Top Consumers',
           align: 'center'
-        }
+        },
       };
     });
   }
