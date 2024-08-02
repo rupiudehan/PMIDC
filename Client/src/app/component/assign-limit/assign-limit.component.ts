@@ -8,6 +8,7 @@ import { AssignLimitService } from './assign-limit.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
+import { maxDigitValidator } from 'src/app/maxDigitValidator';
 
 @Component({
   selector: 'app-assign-limit',
@@ -48,7 +49,7 @@ export class AssignLimitComponent implements OnInit {
       schemeId: [0],
       userId: [0],
       levelId: [0],
-      limit: ['', [Validators.required, Validators.maxLength(150)]],
+      limit: ['', [Validators.required, Validators.maxLength(17), maxDigitValidator(17)]],
     });
 
     this.formValue.get('levelId')?.valueChanges.subscribe((levelId) => {
@@ -300,6 +301,15 @@ updateLimit() {
         
       }
   }  
+
+  onInputChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+  
+    if (value.length > 17) {
+      inputElement.value = value.slice(0, 17);
+    }
+  }
 
   deleteLimit(id: number) {
     Swal.fire({

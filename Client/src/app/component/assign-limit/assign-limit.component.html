@@ -35,7 +35,10 @@
               </div>
               <div class="col-md-5 mb-3">
                 <label class="form-label" for="limit"><h5>Assign Limit</h5></label>
-                <input type="number" class="form-control" id="limit" formControlName="limit" placeholder="Assign Limit" required>
+                <input type="number" class="form-control" id="limit" formControlName="limit" (input)="onInputChange($event)" placeholder="Assign Limit" min="0" max="17" required>
+                <div *ngIf="formValue.controls['limit'].hasError('maxDigits')">
+                  <small class="text-danger">Amount cannot exceed 17 digits.</small>
+              </div>
               </div>
             </div>
             
