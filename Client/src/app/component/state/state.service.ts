@@ -14,46 +14,46 @@ export class StateService {
     constructor(private http : HttpClient) { }
 
     deleteState(id: number) {
-      return this.http.delete<any>(`http://localhost:3000/api/states/${id}`)
+      return this.http.delete<any>(`http://49.50.66.74:84/api/states/${id}`)
     }
     // getDetailState(id: number) {
-    //   return this.http.get<any>(`http://localhost:3000/api/states?id=${id}`)
+    //   return this.http.get<any>(`http://49.50.66.74:84/api/states?id=${id}`)
     // }
     getstate(): Observable<any> {
-      return this.http.get<any>("http://localhost:3000/api/states")
+      return this.http.get<any>("http://49.50.66.74:84/api/states")
     }
 
     // getAllCountries(): Observable<any> {
-    //   return this.http.get<any>(`http://localhost:3000/api/countries`);
+    //   return this.http.get<any>(`http://49.50.66.74:84/api/countries`);
     // }
   
     postState(data:any){
       debugger;
-      return this.http.post<any>("http://localhost:3000/api/states", data)
+      return this.http.post<any>("http://49.50.66.74:84/api/states", data)
       .pipe(map((res:any)=>{
          return res;
       }));
     }
   
     updateState(data: any): Observable<any> {
-      return this.http.put<any>(`http://localhost:3000/api/states/${data.id}`, data);
+      return this.http.put<any>(`http://49.50.66.74:84/api/states/${data.id}`, data);
     }
   
     editState(id: number){
-      return this.http.put<any>(`http://localhost:3000/api/states/${id}`,id)
+      return this.http.put<any>(`http://49.50.66.74:84/api/states/${id}`,id)
     }
 
     getCountry(): Observable<any>{
-      return this.http.get<any>("http://localhost:3000/api/countries")
+      return this.http.get<any>("http://49.50.66.74:84/api/countries")
     }
 
     getDetailState(id : number){
     
-      return this.http.get<any>(`http://localhost:3000/api/states/${id}`)
+      return this.http.get<any>(`http://49.50.66.74:84/api/states/${id}`)
     }
   
     fetchStateById(id: number): Observable<any> {
-      return this.http.get<any>(`http://localhost:3000/api/states/${id}`);
+      return this.http.get<any>(`http://49.50.66.74:84/api/states/${id}`);
     }
   }
   

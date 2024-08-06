@@ -7,31 +7,31 @@ import { CountryModel } from './country.model';
   providedIn: 'root'
 })
 export class CountryService {
-  private apiUrl = 'http://localhost:3000/api/countries';
+  private apiUrl = 'http://49.50.66.74:84/api/countries';
   
 
   deleteCountry(id: number){
     debugger
-    return this.http.delete<any>(`http://localhost:3000/api/countries/${id}`)
+    return this.http.delete<any>(`http://49.50.66.74:84/api/countries/${id}`)
   }
 
   getDetailCountry(id : number){
     
-    return this.http.get<any>(`http://localhost:3000/api/countries/${id}`)
+    return this.http.get<any>(`http://49.50.66.74:84/api/countries/${id}`)
   }
 
   getCountry(): Observable<any>{
-    return this.http.get<any>("http://localhost:3000/api/countries")
+    return this.http.get<any>("http://49.50.66.74:84/api/countries")
   }
 
   fetchCountryById(id: number): Observable<any> {
-    return this.http.get<any>(`http://localhost:3000/api/countries/${id}`);
+    return this.http.get<any>(`http://49.50.66.74:84/api/countries/${id}`);
   }
 
   constructor(private http: HttpClient) { }
 
   postCountry(data:any){
-    return this.http.post<any>("http://localhost:3000/api/countries", data)
+    return this.http.post<any>("http://49.50.66.74:84/api/countries", data)
     .pipe(map((res:any)=>{
       console.log(res);
        return res;
@@ -39,16 +39,16 @@ export class CountryService {
   }
 
   editCountry(id: number, countryName: string){
-    return this.http.put<any>(`http://localhost:3000/api/countries/${id}`, {countryName})
+    return this.http.put<any>(`http://49.50.66.74:84/api/countries/${id}`, {countryName})
   }
   
   updateCountry(data: any): Observable<any> {
     debugger
-    return this.http.put(`http://localhost:3000/api/countries/${data.id}`, data);
+    return this.http.put(`http://49.50.66.74:84/api/countries/${data.id}`, data);
   }
   
   // getCountry(): Observable<any> {
-  //   return this.http.get<any>("http://localhost:3000/Country")
+  //   return this.http.get<any>("http://49.50.66.74:84/Country")
   // }
 
 
@@ -57,19 +57,19 @@ export class CountryService {
   // }
 
   // getDetailCountry(): Observable<any[]> {
-  //   return this.http.get<any[]>(`http://localhost:3000/Country?id=${id}`);
+  //   return this.http.get<any[]>(`http://49.50.66.74:84/Country?id=${id}`);
   // }
 
   // deleteCountry(id: number): Observable<void> {
-  //   return this.http.delete<void>(`http://localhost:3000/Country?${id}`);
+  //   return this.http.delete<void>(`http://49.50.66.74:84/Country?${id}`);
   // }
 
   // editCountry(id: number){
-  //        return this.http.get<any>(`http://localhost:3000/Country?id=${id}`)
+  //        return this.http.get<any>(`http://49.50.66.74:84/Country?id=${id}`)
   //      }
 
   getAllUser(): Observable<any>{
-    return this.http.get<any>("http://localhost:3000/api/dashboard")
+    return this.http.get<any>("http://49.50.66.74:84/api/dashboard")
   }
      
 }

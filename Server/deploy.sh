@@ -3,8 +3,8 @@
   user: 'postgres',
     host: 'localhost',
     database: 'PMIDC',
-    password: 'yashAN@@2002',
-    port: 5433,
+    password: '123',
+    port: 5432,
   })
 
 # Variables

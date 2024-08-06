@@ -6,31 +6,31 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FundsService {
-  private apiUrl = 'http://localhost:3000/api/funds';
+  private apiUrl = 'http://49.50.66.74:84/api/funds';
   
 
   deleteFunds(id: number){
-    return this.http.delete<any>(`http://localhost:3000/api/funds/${id}`)
+    return this.http.delete<any>(`http://49.50.66.74:84/api/funds/${id}`)
   }
 
   getDetailFunds(id : number){
     
-    return this.http.get<any>(`http://localhost:3000/api/funds/${id}`)
+    return this.http.get<any>(`http://49.50.66.74:84/api/funds/${id}`)
   }
 
   getFunds(): Observable<any>{
-    return this.http.get<any>("http://localhost:3000/api/funds")
+    return this.http.get<any>("http://49.50.66.74:84/api/funds")
   }
 
   fetchFundsById(id: number): Observable<any> {
-    return this.http.get<any>(`http://localhost:3000/api/funds/${id}`);
+    return this.http.get<any>(`http://49.50.66.74:84/api/funds/${id}`);
   }
 
   constructor(private http: HttpClient) { }
 
   postFunds(data:any){
     debugger;
-    return this.http.post<any>("http://localhost:3000/api/funds", data)
+    return this.http.post<any>("http://49.50.66.74:84/api/funds", data)
     .pipe(map((res:any)=>{
       console.log(res);
        return res;
@@ -38,12 +38,12 @@ export class FundsService {
   }
 
   editFunds(id: number, funds: string){
-    return this.http.put<any>(`http://localhost:3000/api/funds/${id}`, {funds})
+    return this.http.put<any>(`http://49.50.66.74:84/api/funds/${id}`, {funds})
   }
   
   updateFunds(data: any): Observable<any> {
     debugger
-    return this.http.put(`http://localhost:3000/api/funds/${data.id}`, data);
+    return this.http.put(`http://49.50.66.74:84/api/funds/${data.id}`, data);
   }
      
 }

@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class BargraphService {
 
-  private apiUrl = 'http://localhost:3000/api/bargraph'; 
+  private apiUrl = 'http://49.50.66.74:84/api/bargraph'; 
 
   constructor(private http: HttpClient) { }
 
   getBarGraphData(): Observable<any> {
     debugger;
-    return this.http.get<any>('http://localhost:3000/api/bargraph');
+    return this.http.get<any>('http://49.50.66.74:84/api/bargraph');
 }
 }

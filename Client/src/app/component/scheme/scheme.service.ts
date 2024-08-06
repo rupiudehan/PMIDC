@@ -7,30 +7,30 @@ import { map, Observable } from 'rxjs';
 })
 export class SchemeService {
 
-  private apiUrl = 'http://localhost:3000/api/scheme';
+  private apiUrl = 'http://49.50.66.74:84/api/scheme';
   
 
   deleteScheme(id: number){
-    return this.http.delete<any>(`http://localhost:3000/api/scheme/${id}`)
+    return this.http.delete<any>(`http://49.50.66.74:84/api/scheme/${id}`)
   }
 
   getDetailScheme(id : number){
     
-    return this.http.get<any>(`http://localhost:3000/api/scheme/${id}`)
+    return this.http.get<any>(`http://49.50.66.74:84/api/scheme/${id}`)
   }
 
   getScheme(): Observable<any>{
-    return this.http.get<any>("http://localhost:3000/api/scheme")
+    return this.http.get<any>("http://49.50.66.74:84/api/scheme")
   }
 
   fetchSchemeById(id: number): Observable<any> {
-    return this.http.get<any>(`http://localhost:3000/api/scheme/${id}`);
+    return this.http.get<any>(`http://49.50.66.74:84/api/scheme/${id}`);
   }
 
   constructor(private http: HttpClient) { }
 
   postScheme(data:any){
-    return this.http.post<any>("http://localhost:3000/api/scheme", data)
+    return this.http.post<any>("http://49.50.66.74:84/api/scheme", data)
     .pipe(map((res:any)=>{
       console.log(res);
        return res;
@@ -38,11 +38,11 @@ export class SchemeService {
   }
 
   editScheme(id: number, schemeName: string){
-    return this.http.put<any>(`http://localhost:3000/api/scheme/${id}`, {schemeName})
+    return this.http.put<any>(`http://49.50.66.74:84/api/scheme/${id}`, {schemeName})
   }
   
   updateScheme(data: any): Observable<any> {
     debugger
-    return this.http.put(`http://localhost:3000/api/scheme/${data.id}`, data);
+    return this.http.put(`http://49.50.66.74:84/api/scheme/${data.id}`, data);
   }
 }

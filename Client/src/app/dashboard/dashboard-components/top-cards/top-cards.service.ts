@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class TopcardService {
 
-  private apiUrl = 'http://localhost:3000/api/dashboard'; 
+  private apiUrl = 'http://49.50.66.74:84/api/dashboard'; 
 
   constructor(private http: HttpClient) { }
 
   getTopcardsData(): Observable<any> {
-    return this.http.get<any>('http://localhost:3000/api/dashboard');
+    return this.http.get<any>('http://49.50.66.74:84/api/dashboard');
   }
 
   

@@ -1,12 +1,12 @@
 // const Country = require('../Models/country.model');
 var Pool = require ('pg').Pool;
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'PMIDC',
-    password: 'yashAN@@2002',
-    port: 5433,
-  })
+  user: 'postgres',
+  host: 'localhost',
+  database: 'PMIDC',
+  password: '123',
+  port: 5432,
+})
 
   
 

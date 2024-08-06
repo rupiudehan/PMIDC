@@ -6,24 +6,24 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class RolesService {
-  private apiUrl = 'http://localhost:3000/api/roles';
+  private apiUrl = 'http://49.50.66.74:84/api/roles';
   
 
   deleteRole(id: number){
-    return this.http.delete<any>(`http://localhost:3000/api/roles/${id}`)
+    return this.http.delete<any>(`http://49.50.66.74:84/api/roles/${id}`)
   }
 
   getDetailRole(id : number){
     
-    return this.http.get<any>(`http://localhost:3000/api/roles/${id}`)
+    return this.http.get<any>(`http://49.50.66.74:84/api/roles/${id}`)
   }
 
   getRole(): Observable<any>{
-    return this.http.get<any>("http://localhost:3000/api/roles")
+    return this.http.get<any>("http://49.50.66.74:84/api/roles")
   }
 
   fetchRoleById(id: number): Observable<any> {
-    return this.http.get<any>(`http://localhost:3000/api/roles/${id}`);
+    return this.http.get<any>(`http://49.50.66.74:84/api/roles/${id}`);
   }
 
   
@@ -31,7 +31,7 @@ export class RolesService {
   constructor(private http: HttpClient) { }
 
   postRole(data:any){
-    return this.http.post<any>("http://localhost:3000/api/roles", data)
+    return this.http.post<any>("http://49.50.66.74:84/api/roles", data)
     .pipe(map((res:any)=>{
       console.log(res);
        return res;
@@ -39,11 +39,11 @@ export class RolesService {
   }
 
   editRole(id: number, roleName: string){
-    return this.http.put<any>(`http://localhost:3000/api/roles/${id}`, {roleName})
+    return this.http.put<any>(`http://49.50.66.74:84/api/roles/${id}`, {roleName})
   }
   
   updateRole(data: any): Observable<any> {
     debugger
-    return this.http.put(`http://localhost:3000/api/roles/${data.id}`, data);
+    return this.http.put(`http://49.50.66.74:84/api/roles/${data.id}`, data);
   }
 }
